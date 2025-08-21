@@ -581,7 +581,10 @@ export const PortfolioProvider = ({ children }) => {
         ) || []
         
         setPortfolioData({
-          profile: profileData || defaultPortfolioData.profile,
+          profile: {
+            ...defaultPortfolioData.profile,
+            ...(profileData || {})
+          },
           sections: [...mergedSections, ...additionalSections]
         })
       } catch (error) {

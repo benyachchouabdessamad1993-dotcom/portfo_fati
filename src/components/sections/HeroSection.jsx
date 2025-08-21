@@ -8,6 +8,19 @@ import {
 } from '@heroicons/react/24/outline'
 
 const HeroSection = ({ profile }) => {
+  const getImageUrl = (photoUrl) => {
+    if (!photoUrl) return ''
+    
+    // Si c'est une URL locale (commence par /uploads/), ajouter le cache-busting
+    if (photoUrl.startsWith('/uploads/')) {
+      return `${photoUrl}?t=${Date.now()}`
+    }
+    
+    // Pour les URLs externes, vérifier s'il y a déjà des paramètres
+    const separator = photoUrl.includes('?') ? '&' : '?'
+    return `${photoUrl}${separator}t=${Date.now()}`
+  }
+
   return (
     <section id="home" className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 text-white relative overflow-hidden">
       {/* Background Pattern */}
@@ -94,9 +107,12 @@ const HeroSection = ({ profile }) => {
                     {/* Image principale */}
                     <div className="w-full h-full rounded-[1.8rem] overflow-hidden relative">
                       <img
-                        src={`${profile.photo}?t=${Date.now()}`}
+                        src={getImageUrl(profile.photo)}
                         alt={`${profile.prenom} ${profile.nom}`}
                         className="w-full h-full object-cover object-center filter brightness-105 contrast-105 group-hover:scale-110 transition-transform duration-700"
+                        onError={(e) => {
+                          e.target.style.display = 'none'
+                        }}
                       />
                       
                       {/* Overlay subtil */}

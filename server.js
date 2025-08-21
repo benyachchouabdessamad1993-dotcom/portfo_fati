@@ -4,6 +4,8 @@ import Database from 'better-sqlite3'
 import bcrypt from 'bcryptjs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import multer from 'multer'
+import fs from 'fs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -760,4 +762,59 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`)
   console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
+})
+
+// Configuration multer pour l'upload de fichiers
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, 'uploads')
+    if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true })
+    }
+    cb(null, uploadDir)
+  },
+  filename: function (req, file, cb) {
+    // Générer un nom unique pour éviter les conflits
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    const ext = path.extname(file.originalname)
+    cb(null, 'profile-' + uniqueSuffix + ext)
+  }
+})
+
+const upload = multer({ 
+  storage: storage,
+  limits: {
+    fileSize: 2 * 1024 * 1024 // 2MB max
+  },
+  fileFilter: function (req, file, cb) {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true)
+    } else {
+      cb(new Error('Seuls les fichiers image sont autorisés'), false)
+    }
+  }
+})
+
+// Servir les fichiers statiques depuis le dossier uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
+// Nouvelle route pour l'upload de photos
+app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'Aucun fichier fourni' })
+    }
+    
+    // Retourner l'URL relative du fichier
+    const fileUrl = `/uploads/${req.file.filename}`
+    
+    res.json({ 
+      success: true, 
+      url: fileUrl,
+      filename: req.file.filename
+    })
+  } catch (error) {
+    console.error('Erreur upload:', error)
+    res.status(500).json({ success: false, error: 'Erreur lors de l\'upload' })
+  }
 })

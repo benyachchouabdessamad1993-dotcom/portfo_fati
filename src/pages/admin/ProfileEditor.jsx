@@ -44,7 +44,7 @@ const ProfileEditor = () => {
   })
   const [passwordLoading, setPasswordLoading] = React.useState(false)
 
-  const handlePhotoUpload = (event) => {
+  const handlePhotoUpload = async (event) => {
     const file = event.target.files[0]
     if (file && file.type.startsWith('image/')) {
       // Vérifier la taille du fichier (max 2MB)
@@ -55,39 +55,33 @@ const ProfileEditor = () => {
       
       setPhotoFile(file)
       
-      // Créer une version redimensionnée pour l'aperçu et le stockage
-      const canvas = document.createElement('canvas')
-      const ctx = canvas.getContext('2d')
-      const img = new Image()
+      // Créer un aperçu local
+      const previewUrl = URL.createObjectURL(file)
+      setPhotoPreview(previewUrl)
       
-      img.onload = () => {
-        // Redimensionner à 400x400 max
-        const maxSize = 400
-        let { width, height } = img
+      try {
+        // Upload du fichier vers le serveur
+        const formData = new FormData()
+        formData.append('photo', file)
         
-        if (width > height) {
-          if (width > maxSize) {
-            height = (height * maxSize) / width
-            width = maxSize
-          }
+        const response = await fetch('/api/upload/photo', {
+          method: 'POST',
+          body: formData
+        })
+        
+        const result = await response.json()
+        
+        if (result.success) {
+          // Stocker l'URL du serveur pour la soumission
+          setPhotoPreview(result.url)
+          toast.success('Photo uploadée avec succès!')
         } else {
-          if (height > maxSize) {
-            width = (width * maxSize) / height
-            height = maxSize
-          }
+          toast.error('Erreur lors de l\'upload: ' + result.error)
         }
-        
-        canvas.width = width
-        canvas.height = height
-        
-        ctx.drawImage(img, 0, 0, width, height)
-        
-        // Convertir en base64 avec compression
-        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8)
-        setPhotoPreview(compressedDataUrl)
+      } catch (error) {
+        toast.error('Erreur lors de l\'upload de la photo')
+        console.error('Upload error:', error)
       }
-      
-      img.src = URL.createObjectURL(file)
     }
   }
 
