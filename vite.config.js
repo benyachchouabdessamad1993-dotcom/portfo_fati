@@ -23,8 +23,8 @@ export default defineConfig({
             './src/pages/admin/SectionsEditor.jsx',
             './src/pages/admin/CoursesEditor.jsx'
           ],
-          ui: ['@headlessui/react', '@heroicons/react'],
-          editor: ['@uiw/react-md-editor']
+          ui: ['@headlessui/react', '@heroicons/react']
+          // Removed: editor: ['@uiw/react-md-editor']
         }
       }
     },
