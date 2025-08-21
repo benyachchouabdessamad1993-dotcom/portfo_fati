@@ -534,10 +534,23 @@ app.post('/api/auth/signin', (req, res) => {
 app.get('/api/profile/:userId', (req, res) => {
   try {
     const { userId } = req.params
-    const profile = db.prepare('SELECT * FROM profiles WHERE user_id = ?').get(userId)
+    let profile = db.prepare('SELECT * FROM profiles WHERE user_id = ?').get(userId)
+    
+    // Si aucun profil n'existe, créer un profil par défaut
+    if (!profile) {
+      const stmt = db.prepare(`
+        INSERT INTO profiles (user_id, nom, prenom, nationalite, gsm, grade, fonction, email, affiliation, laboratoire, equipe, mission, photo, linkedin, researchgate, youtube)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')
+      `)
+      
+      stmt.run(userId)
+      profile = db.prepare('SELECT * FROM profiles WHERE user_id = ?').get(userId)
+    }
+    
     res.json(profile)
   } catch (error) {
-    res.status(500).json({ error: 'Erreur lors de la récupération du profil' })
+    console.error('Erreur serveur profil:', error)
+    res.status(500).json({ error: 'Erreur lors de la récupération du profil', details: error.message })
   }
 })
 
@@ -584,13 +597,25 @@ app.get('/api/sections/:userId', (req, res) => {
   try {
     const { userId } = req.params
     const sections = db.prepare('SELECT * FROM sections WHERE user_id = ? ORDER BY section_order').all(userId)
-    const formattedSections = sections.map(section => ({
-      ...section,
-      content: section.content ? JSON.parse(section.content) : null
-    }))
+    const formattedSections = sections.map(section => {
+      try {
+        return {
+          ...section,
+          content: section.content ? JSON.parse(section.content) : null
+        }
+      } catch (parseError) {
+        console.error('Erreur parsing section content:', parseError)
+        return {
+          ...section,
+          content: null
+        }
+      }
+    })
+    
     res.json(formattedSections)
   } catch (error) {
-    res.status(500).json({ error: 'Erreur lors de la récupération des sections' })
+    console.error('Erreur serveur sections:', error)
+    res.status(500).json({ error: 'Erreur lors de la récupération des sections', details: error.message })
   }
 })
 
@@ -747,12 +772,14 @@ app.post('/api/change-password', authenticateToken, async (req, res) => {
   }
 })
 
-// Keep and modify the production block at the end (lines 747-751):
+// Servir les fichiers statiques depuis le dossier uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
+// En production, servir les fichiers statiques du frontend
 if (process.env.NODE_ENV === 'production') {
-  // Serve static files first
   app.use(express.static(path.join(__dirname, 'dist')))
   
-  // Then handle React Router catch-all (must be last)
+  // Gérer les routes React Router (doit être en dernier)
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
   })
@@ -797,6 +824,16 @@ const upload = multer({
 
 // Servir les fichiers statiques depuis le dossier uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
+// En production, servir les fichiers statiques du frontend
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'dist')))
+  
+  // Gérer les routes React Router (doit être en dernier)
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  })
+}
 
 // Nouvelle route pour l'upload de photos
 app.post('/api/upload/photo', upload.single('photo'), (req, res) => {

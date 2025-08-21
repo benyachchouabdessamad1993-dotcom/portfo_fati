@@ -5,9 +5,11 @@ export const getImageUrl = (photoUrl) => {
     return ''
   }
   
-  // Si c'est une URL locale (commence par /uploads/), ajouter le cache-busting
+  // Si c'est une URL locale (commence par /uploads/), ajouter l'URL du serveur en production
   if (photoUrl.startsWith('/uploads/')) {
-    return `${photoUrl}?t=${Date.now()}`
+    // En production, utiliser l'URL complète du serveur backend
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
+    return `${baseUrl}${photoUrl}?t=${Date.now()}`
   }
   
   // Si c'est une URL complète (http/https), l'utiliser telle quelle avec cache-busting

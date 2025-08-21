@@ -8,10 +8,8 @@
     "server": "node server.js",
     "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
     "build": "vite build",
-    "preview": "vite preview",
-    "start": "NODE_ENV=production node server.js",
-    "build:prod": "npm run build && npm run prepare:prod",
-    "prepare:prod": "echo 'Production build ready'"
+    "build:prod": "npm run build",
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

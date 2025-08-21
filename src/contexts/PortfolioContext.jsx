@@ -533,69 +533,97 @@ const defaultPortfolioData = {
 export const PortfolioProvider = ({ children }) => {
   const [portfolioData, setPortfolioData] = useState(defaultPortfolioData)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
   const { user } = useAuth()
+
+  // Extraire loadPortfolioData comme fonction du composant
+  // Ajouter cette fonction utilitaire au début du fichier
+  const getApiUrl = (endpoint) => {
+    const baseUrl = import.meta.env.VITE_API_URL || ''
+    return `${baseUrl}${endpoint}`
+  }
+
+  const loadPortfolioData = async () => {
+    try {
+      setLoading(true)
+      // Vérifier que l'utilisateur est connecté
+      if (!user?.id) {
+        console.log('Utilisateur non connecté, utilisation des données par défaut')
+        setPortfolioData(defaultPortfolioData)
+        return
+      }
+      
+      // Récupérer le profil
+      const profileResponse = await fetch(getApiUrl(`/api/profile/${user.id}`))
+      let profileData = null
+      
+      if (profileResponse.ok) {
+        const responseText = await profileResponse.text()
+        if (responseText) {
+          try {
+            profileData = JSON.parse(responseText)
+          } catch (jsonError) {
+            console.error('Erreur parsing JSON profil:', jsonError)
+          }
+        }
+      } else {
+        console.error('Échec de récupération du profil, status:', profileResponse.status)
+      }
+      
+      // Récupération des sections avec gestion d'erreur améliorée
+      const sectionsResponse = await fetch(getApiUrl(`/api/sections/${user.id}`))
+      let sectionsData = null
+      
+      if (sectionsResponse.ok) {
+        const responseText = await sectionsResponse.text()
+        if (responseText) {
+          try {
+            sectionsData = JSON.parse(responseText)
+          } catch (jsonError) {
+            console.error('Erreur parsing JSON sections:', jsonError)
+          }
+        }
+      }
+      // Fusionner les sections de l'API avec les sections par défaut
+      const mergedSections = defaultPortfolioData.sections.map(defaultSection => {
+        const apiSection = sectionsData?.find(section => section.id === defaultSection.id)
+        
+        if (apiSection) {
+          const hasEmptyContent = !apiSection.content || 
+            (Array.isArray(apiSection.content) && apiSection.content.length === 0) ||
+            (typeof apiSection.content === 'string' && apiSection.content.trim() === '')
+          
+          return {
+            ...defaultSection,
+            ...apiSection,
+            content: hasEmptyContent ? defaultSection.content : apiSection.content
+          }
+        }
+        
+        return defaultSection
+      })
+      
+      // Ajouter les sections de l'API qui n'existent pas dans les données par défaut
+      const additionalSections = sectionsData?.filter(apiSection => 
+        !defaultPortfolioData.sections.find(defaultSection => defaultSection.id === apiSection.id)
+      ) || []
+      
+      setPortfolioData({
+        profile: {
+          ...defaultPortfolioData.profile,
+          ...(profileData || {})
+        },
+        sections: [...mergedSections, ...additionalSections]
+      })
+    } catch (error) {
+      console.error('Erreur lors du chargement des données:', error)
+      // Fallback sur les données par défaut complètes
+      setPortfolioData(defaultPortfolioData)
+    }
+  }
 
   // Charger les données depuis l'API au démarrage
   useEffect(() => {
-    const loadPortfolioData = async () => {
-      if (!user?.id) return
-      
-      try {
-        // Dans la fonction loadPortfolioData, ligne ~485
-        const profileResponse = await fetch(`/api/profile/${user.id}`)
-        let profileData = null
-        if (profileResponse.ok) {
-          profileData = await profileResponse.json()
-        } else {
-          console.error('Échec de récupération du profil, status:', profileResponse.status)
-        }
-        
-        // Charger les sections avec validation de réponse
-        const sectionsResponse = await fetch(`/api/sections/${user.id}`)
-        let sectionsData = null
-        if (sectionsResponse.ok) {
-          sectionsData = await sectionsResponse.json()
-        }
-        
-        // Fusionner les sections de l'API avec les sections par défaut
-        const mergedSections = defaultPortfolioData.sections.map(defaultSection => {
-          const apiSection = sectionsData?.find(section => section.id === defaultSection.id)
-          
-          if (apiSection) {
-            // Si l'API a une section mais avec un contenu vide, garder le contenu par défaut
-            const hasEmptyContent = !apiSection.content || 
-              (Array.isArray(apiSection.content) && apiSection.content.length === 0) ||
-              (typeof apiSection.content === 'string' && apiSection.content.trim() === '')
-            
-            return {
-              ...defaultSection,
-              ...apiSection,
-              content: hasEmptyContent ? defaultSection.content : apiSection.content
-            }
-          }
-          
-          return defaultSection
-        })
-        
-        // Ajouter les sections de l'API qui n'existent pas dans les données par défaut
-        const additionalSections = sectionsData?.filter(apiSection => 
-          !defaultPortfolioData.sections.find(defaultSection => defaultSection.id === apiSection.id)
-        ) || []
-        
-        setPortfolioData({
-          profile: {
-            ...defaultPortfolioData.profile,
-            ...(profileData || {})
-          },
-          sections: [...mergedSections, ...additionalSections]
-        })
-      } catch (error) {
-        console.error('Erreur lors du chargement des données:', error)
-        // Fallback sur les données par défaut complètes
-        setPortfolioData(defaultPortfolioData)
-      }
-    }
-    
     loadPortfolioData()
   }, [user])
 
