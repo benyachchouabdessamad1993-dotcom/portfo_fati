@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { usePortfolio } from '../contexts/PortfolioContext'
+import { getImageUrl } from '../utils/imageUtils'
 import { 
   Bars3Icon, 
   XMarkIcon, 
@@ -18,6 +20,7 @@ import {
 } from '@heroicons/react/24/outline'
 
 const Header = () => {
+  const { portfolioData } = usePortfolio()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
@@ -71,7 +74,7 @@ const Header = () => {
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-full blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-white/30 group-hover:ring-blue-400/70 transition-all duration-300 shadow-xl">
                   <img 
-                    src="/api/placeholder/56/56" 
+                    src={getImageUrl(portfolioData?.profile?.photo)} 
                     alt="Profile" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     onError={(e) => {

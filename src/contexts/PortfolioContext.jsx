@@ -27,7 +27,7 @@ const defaultPortfolioData = {
     youtube: 'https://www.youtube.com/results?search_query=stic+laboratory',
     linkedin: 'https://www.linkedin.com/in/fatima-lakrami-96ab23155/',
     researchgate: 'https://www.researchgate.net/profile/Fatima-Lakrami-3',
-    photo: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400',
+    photo: '', // Remplacer l'URL Pexels par une chaîne vide
     mission: 'Contribuer à l\'avancement des technologies de l\'information et de la communication dans l\'éducation, en développant des solutions innovantes pour l\'enseignement et la formation à l\'ère numérique.',
     langues: [
       { nom: 'Arabe', niveau: 'Natif', color: 'from-blue-500 to-cyan-500' },
@@ -546,6 +546,8 @@ export const PortfolioProvider = ({ children }) => {
         let profileData = null
         if (profileResponse.ok) {
           profileData = await profileResponse.json()
+        } else {
+          console.error('Échec de récupération du profil, status:', profileResponse.status)
         }
         
         // Charger les sections avec validation de réponse

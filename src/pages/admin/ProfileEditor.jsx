@@ -134,12 +134,19 @@ const ProfileEditor = () => {
     let photoUrl = data.photo
     
     if (photoFile && photoPreview) {
-      // Vérifier que les données base64 ne sont pas trop volumineuses
-      if (photoPreview.length > 1000000) { // 1MB en base64
-        toast.error('La photo est trop volumineuse. Veuillez choisir une image plus petite.')
-        return
+      // Si photoPreview commence par /uploads/, c'est une URL valide du serveur
+      if (photoPreview.startsWith('/uploads/')) {
+        photoUrl = photoPreview
+      } else if (photoPreview.startsWith('data:')) {
+        // Vérifier que les données base64 ne sont pas trop volumineuses
+        if (photoPreview.length > 1000000) { // 1MB en base64
+          toast.error('La photo est trop volumineuse. Veuillez choisir une image plus petite.')
+          return
+        }
+        photoUrl = photoPreview
+      } else {
+        photoUrl = photoPreview
       }
-      photoUrl = photoPreview
     } else if (data.photo && data.photo.trim()) {
       photoUrl = data.photo
     } else {
