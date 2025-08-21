@@ -818,3 +818,18 @@ app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
     res.status(500).json({ success: false, error: 'Erreur lors de l\'upload' })
   }
 })
+// Ajouter cette route après les autres routes
+app.get('/api/check-image/:filename', (req, res) => {
+  try {
+    const { filename } = req.params
+    const imagePath = path.join(__dirname, 'uploads', filename)
+    
+    if (fs.existsSync(imagePath)) {
+      res.json({ exists: true, url: `/uploads/${filename}` })
+    } else {
+      res.json({ exists: false })
+    }
+  } catch (error) {
+    res.status(500).json({ exists: false, error: error.message })
+  }
+})

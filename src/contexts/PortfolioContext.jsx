@@ -622,11 +622,8 @@ export const PortfolioProvider = ({ children }) => {
         throw new Error(result.error)
       }
 
-      // Mettre à jour l'état local
-      setPortfolioData(prev => ({
-        ...prev,
-        profile: { ...prev.profile, ...profileData }
-      }))
+      // Recharger les données depuis l'API pour assurer la synchronisation
+      await loadPortfolioData()
       
       return { success: true }
     } catch (error) {

@@ -111,7 +111,33 @@ const HeroSection = ({ profile }) => {
                         alt={`${profile.prenom} ${profile.nom}`}
                         className="w-full h-full object-cover object-center filter brightness-105 contrast-105 group-hover:scale-110 transition-transform duration-700"
                         onError={(e) => {
-                          e.target.style.display = 'none'
+                          console.log('Erreur de chargement image:', e.target.src)
+                          console.log('Photo URL originale:', profile.photo)
+                          
+                          // Ne pas essayer de recharger si l'URL est vide
+                          if (!profile.photo || profile.photo.trim() === '') {
+                            console.warn('URL de photo vide, masquage de l\'image')
+                            e.target.style.display = 'none'
+                            return
+                          }
+                          
+                          // Essayer de recharger l'image une fois
+                          if (!e.target.dataset.retried) {
+                            e.target.dataset.retried = 'true'
+                            setTimeout(() => {
+                              const newUrl = getImageUrl(profile.photo)
+                              if (newUrl && newUrl !== e.target.src) {
+                                e.target.src = newUrl
+                              }
+                            }, 1000)
+                          } else {
+                            // Si l'image ne se charge toujours pas, la masquer
+                            e.target.style.display = 'none'
+                          }
+                        }}
+                        onLoad={(e) => {
+                          console.log('Image chargée avec succès:', e.target.src)
+                          e.target.style.display = 'block'
                         }}
                       />
                       

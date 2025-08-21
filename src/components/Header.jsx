@@ -78,8 +78,17 @@ const Header = () => {
                     alt="Profile" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     onError={(e) => {
+                      console.log('Erreur de chargement image header:', e.target.src)
+                      console.log('Photo URL originale:', portfolioData?.profile?.photo)
+                      
+                      // Masquer l'image et afficher l'icône de fallback
                       e.target.style.display = 'none'
                       e.target.nextSibling.style.display = 'flex'
+                    }}
+                    onLoad={(e) => {
+                      console.log('Image header chargée avec succès:', e.target.src)
+                      e.target.style.display = 'block'
+                      e.target.nextSibling.style.display = 'none'
                     }}
                   />
                   <div className="w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center" style={{display: 'none'}}>
