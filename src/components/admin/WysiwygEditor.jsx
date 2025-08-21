@@ -1,28 +1,24 @@
-import React from 'react'
-import MDEditor from '@uiw/react-md-editor'
-import '@uiw/react-md-editor/markdown-editor.css'
+import React, { useState, useEffect } from 'react';
+import MDEditor from '@uiw/react-md-editor/nohighlight';
 
-const WysiwygEditor = ({ value, onChange, placeholder = "Commencez à écrire..." }) => {
+const WysiwygEditor = ({ value, onChange, placeholder }) => {
   return (
-    <div className="wysiwyg-editor">
-      <MDEditor
-        value={value || ''}
-        onChange={(val) => onChange(val || '')}
-        preview="edit"
-        hideToolbar={false}
-        visibleDragbar={false}
-        textareaProps={{
-          placeholder,
-          style: {
-            fontSize: 14,
-            lineHeight: 1.5,
-            fontFamily: 'inherit'
-          }
-        }}
-        height={200}
-      />
-    </div>
-  )
-}
+    <MDEditor
+      value={value}
+      onChange={onChange}
+      data-color-mode="light"
+      preview="edit"
+      hideToolbar={false}
+      textareaProps={{
+        placeholder: placeholder || 'Entrez votre contenu ici...',
+        style: {
+          fontSize: 14,
+          backgroundColor: '#f8f9fa',
+          fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+        },
+      }}
+    />
+  );
+};
 
-export default WysiwygEditor
+export default WysiwygEditor;
