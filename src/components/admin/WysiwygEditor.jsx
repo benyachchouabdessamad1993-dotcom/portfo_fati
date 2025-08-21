@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import MDEditor from '@uiw/react-md-editor/nohighlight';
+import MDEditor from '@uiw/react-markdown-editor';
 
 const WysiwygEditor = ({ value, onChange, placeholder }) => {
   return (
