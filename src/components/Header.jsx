@@ -189,39 +189,26 @@ const Header = () => {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`group flex items-center py-4 px-5 rounded-2xl font-medium transition-all duration-300 hover:scale-[1.02] ${
+                      className={`group relative flex items-center px-6 py-3 rounded-2xl font-semibold text-sm transition-all duration-300 hover:scale-105 ${
                         isActive
-                          ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg'
-                          : 'text-slate-700 hover:text-blue-600 hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 hover:shadow-md'
+                          ? isScrolled
+                            ? 'bg-white text-slate-800 shadow-xl'
+                            : 'bg-white/25 text-white backdrop-blur-sm border border-white/40 shadow-2xl'
+                          : isScrolled
+                            ? 'text-slate-700 hover:bg-slate-100 hover:text-slate-900 shadow-lg hover:shadow-xl'
+                            : 'text-white hover:bg-white/15 backdrop-blur-sm border border-white/20 hover:border-white/40'
                       }`}
-                      onClick={() => setIsMenuOpen(false)}
-                      style={{ 
-                        animationDelay: `${index * 50}ms`,
-                        animation: isMenuOpen ? 'slideInUp 0.5s ease-out forwards' : 'none'
-                      }}
                     >
-                      <Icon className="h-5 w-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
-                      <span className="group-hover:translate-x-1 transition-transform duration-300 flex-1">
+                      <Icon className="h-4 w-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
+                      <span className="group-hover:translate-x-0.5 transition-transform duration-300">
                         {item.name}
                       </span>
-                      <ChevronDownIcon className="h-4 w-4 opacity-0 group-hover:opacity-100 -rotate-90 group-hover:translate-x-1 transition-all duration-300" />
+                      <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
                     </a>
                   )
                 })}
-              </div>
                 
-              <div className="pt-6 mt-6 border-t border-slate-200">
-                <Link
-                  to="/login"
-                  className="group flex items-center py-4 px-5 bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 text-white hover:from-blue-700 hover:via-purple-700 hover:to-cyan-700 rounded-2xl font-semibold transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Cog6ToothIcon className="h-5 w-5 mr-3 group-hover:rotate-180 transition-transform duration-500" />
-                  <span className="group-hover:translate-x-1 transition-transform duration-300 flex-1">
-                    Administration
-                  </span>
-                  <div className="w-2 h-2 bg-white/50 rounded-full group-hover:bg-white transition-colors duration-300"></div>
-                </Link>
+                {/* Bouton admin supprimé pour des raisons de sécurité */}
               </div>
             </div>
           </div>
