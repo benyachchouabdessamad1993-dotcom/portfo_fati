@@ -84,10 +84,6 @@ const Login = () => {
                   )}
                 </button>
               </div>
-              <div className="mt-4 p-3 bg-green-50 rounded-lg">
-                <p className="text-xs text-green-600 font-medium">✅ Connexion sécurisée</p>
-                <p className="text-xs text-green-600">Authentification via SQLite</p>
-              </div>
               {errors.password && (
                 <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
               )}
@@ -110,14 +106,6 @@ const Login = () => {
             <p className="text-xs text-secondary-500">
               Accès réservé aux administrateurs autorisés
             </p>
-            <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200">
-              <div className="flex items-center justify-center mb-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                <p className="text-xs text-green-700 font-medium">Base de données SQLite</p>
-              </div>
-              <p className="text-xs text-green-600">Base de données locale chiffrée</p>
-              <p className="text-xs text-green-600">Mots de passe hashés avec bcrypt</p>
-            </div>
           </div>
         </div>
       </div>

@@ -47,12 +47,47 @@ const ProfileEditor = () => {
   const handlePhotoUpload = (event) => {
     const file = event.target.files[0]
     if (file && file.type.startsWith('image/')) {
-      setPhotoFile(file)
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setPhotoPreview(e.target.result)
+      // Vérifier la taille du fichier (max 2MB)
+      if (file.size > 2 * 1024 * 1024) {
+        toast.error('La photo ne doit pas dépasser 2MB')
+        return
       }
-      reader.readAsDataURL(file)
+      
+      setPhotoFile(file)
+      
+      // Créer une version redimensionnée pour l'aperçu et le stockage
+      const canvas = document.createElement('canvas')
+      const ctx = canvas.getContext('2d')
+      const img = new Image()
+      
+      img.onload = () => {
+        // Redimensionner à 400x400 max
+        const maxSize = 400
+        let { width, height } = img
+        
+        if (width > height) {
+          if (width > maxSize) {
+            height = (height * maxSize) / width
+            width = maxSize
+          }
+        } else {
+          if (height > maxSize) {
+            width = (width * maxSize) / height
+            height = maxSize
+          }
+        }
+        
+        canvas.width = width
+        canvas.height = height
+        
+        ctx.drawImage(img, 0, 0, width, height)
+        
+        // Convertir en base64 avec compression
+        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.8)
+        setPhotoPreview(compressedDataUrl)
+      }
+      
+      img.src = URL.createObjectURL(file)
     }
   }
 
@@ -104,7 +139,12 @@ const ProfileEditor = () => {
   const onSubmit = async (data) => {
     let photoUrl = data.photo
     
-    if (photoFile) {
+    if (photoFile && photoPreview) {
+      // Vérifier que les données base64 ne sont pas trop volumineuses
+      if (photoPreview.length > 1000000) { // 1MB en base64
+        toast.error('La photo est trop volumineuse. Veuillez choisir une image plus petite.')
+        return
+      }
       photoUrl = photoPreview
     } else if (data.photo && data.photo.trim()) {
       photoUrl = data.photo

@@ -94,7 +94,7 @@ const HeroSection = ({ profile }) => {
                     {/* Image principale */}
                     <div className="w-full h-full rounded-[1.8rem] overflow-hidden relative">
                       <img
-                        src={profile.photo}
+                        src={`${profile.photo}?t=${Date.now()}`}
                         alt={`${profile.prenom} ${profile.nom}`}
                         className="w-full h-full object-cover object-center filter brightness-105 contrast-105 group-hover:scale-110 transition-transform duration-700"
                       />
