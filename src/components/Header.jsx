@@ -73,12 +73,13 @@ const Header = () => {
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-full blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-white/30 group-hover:ring-blue-400/70 transition-all duration-300 shadow-xl">
-                  {getImageUrl(portfolioData?.profile?.photo) ? (
+                  {portfolioData?.profile?.photo && getImageUrl(portfolioData.profile.photo) ? (
                     <img 
-                      src={getImageUrl(portfolioData?.profile?.photo)} 
-                      alt="Profile" 
+                      src={getImageUrl(portfolioData.profile.photo)} 
+                      alt={`${portfolioData?.profile?.prenom || 'Profile'} ${portfolioData?.profile?.nom || ''}`}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       onError={(e) => {
+                        console.log('Erreur chargement image:', e.target.src)
                         e.target.style.display = 'none'
                         const fallback = e.target.parentNode.querySelector('.fallback-avatar')
                         if (fallback) fallback.style.display = 'flex'
@@ -90,11 +91,25 @@ const Header = () => {
                       }}
                     />
                   ) : null}
-                  <div className="fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center" style={{display: getImageUrl(portfolioData?.profile?.photo) ? 'none' : 'flex'}}>
+                  <div className="fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center" style={{display: (portfolioData?.profile?.photo && getImageUrl(portfolioData.profile.photo)) ? 'none' : 'flex'}}>
                     <UserCircleIcon className="h-8 w-8 text-white" />
                   </div>
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-r from-emerald-400 to-green-400 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
+              </div>
+              
+              {/* Nom et titre */}
+              <div className="hidden md:block">
+                <div className={`font-bold text-lg transition-colors duration-300 ${
+                  isScrolled ? 'text-slate-800' : 'text-white'
+                }`}>
+                  {portfolioData?.profile?.prenom} {portfolioData?.profile?.nom}
+                </div>
+                <div className={`text-sm transition-colors duration-300 ${
+                  isScrolled ? 'text-slate-600' : 'text-slate-300'
+                }`}>
+                  {portfolioData?.profile?.fonction || 'Enseignant Chercheur'}
+                </div>
               </div>
             </Link>
           </div>
