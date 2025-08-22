@@ -76,24 +76,23 @@ const Header = () => {
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-full blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-white/30 group-hover:ring-blue-400/70 transition-all duration-300 shadow-xl">
                   {/* Image de profil */}
-                  {portfolioData?.profile?.photo && !imageError ? (
-                    <img
-                      src={getImageUrl(portfolioData.profile.photo)}
-                      alt="Photo de profil"
-                      className="w-14 h-14 rounded-full object-cover border-2 border-white/20"
-                      onError={() => {
-                        console.log('Erreur de chargement de l\'image:', portfolioData.profile.photo)
-                        setImageError(true)
-                      }}
-                      onLoad={() => {
-                        console.log('Image chargée avec succès:', portfolioData.profile.photo)
-                        setImageError(false)
-                      }}
-                    />
-                  ) : (
-                    <UserCircleIcon 
-                      className="w-14 h-14 text-white/80"
-                    />
+                  {portfolioData?.profile?.photo && !imageError ? (() => {
+                    const imageUrl = getImageUrlWithRetry(portfolioData.profile.photo);
+                    return (
+                      <img
+                        src={imageUrl}
+                        alt="Photo de profil"
+                        className="w-14 h-14 rounded-full object-cover border-2 border-white/20"
+                        onError={handleImageError}
+                        onLoad={() => {
+                          console.log('Image chargée avec succès:', imageUrl)
+                          setImageError(false)
+                          setImageRetryCount(0)
+                        }}
+                      />
+                    );
+                  })() : (
+                    <UserCircleIcon className="w-14 h-14 text-white/80" />
                   )}
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-r from-emerald-400 to-green-400 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
@@ -241,20 +240,3 @@ const getImageUrlWithRetry = (imagePath) => {
   }
   return baseUrl
 }
-
-// Dans le JSX :
-{portfolioData?.profile?.photo && !imageError ? (
-  <img
-    src={getImageUrlWithRetry(portfolioData.profile.photo)}
-    alt="Photo de profil"
-    className="w-14 h-14 rounded-full object-cover border-2 border-white/20"
-    onError={handleImageError}
-    onLoad={() => {
-      console.log('Image chargée avec succès:', getImageUrlWithRetry(portfolioData.profile.photo))
-      setImageError(false)
-      setImageRetryCount(0)
-    }}
-  />
-) : (
-  <UserCircleIcon className="w-14 h-14 text-white/80" />
-)}

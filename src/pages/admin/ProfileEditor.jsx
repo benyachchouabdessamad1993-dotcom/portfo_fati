@@ -53,6 +53,17 @@ const ProfileEditor = () => {
     return `${cleanBaseUrl}${cleanEndpoint}`
   }
 
+  // Ajouter la même fonction utilitaire
+  const safeJsonParse = async (response) => {
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text()
+      console.error('Réponse non-JSON reçue:', text.substring(0, 200))
+      throw new Error(`Réponse invalide du serveur (${response.status}): ${response.statusText}`)
+    }
+    return await response.json()
+  }
+
   const handlePhotoUpload = async (event) => {
     const file = event.target.files[0]
     if (file && file.type.startsWith('image/')) {
@@ -81,7 +92,11 @@ const ProfileEditor = () => {
           body: formData
         })
         
-        const result = await response.json()
+        if (!response.ok) {
+          throw new Error(`Erreur serveur (${response.status}): ${response.statusText}`)
+        }
+        
+        const result = await safeJsonParse(response)
         
         if (result.success) {
           setPhotoPreview(result.photoUrl)
@@ -91,28 +106,14 @@ const ProfileEditor = () => {
         }
       } catch (error) {
         console.error('Erreur upload photo:', error)
-        toast.error('Erreur lors de l\'upload de la photo')
+        toast.error('Erreur lors de l\'upload de la photo: ' + error.message)
       }
     } else {
       toast.error('Veuillez sélectionner un fichier image valide')
     }
   }
 
-  const handlePasswordChange = async (e) => {
-    e.preventDefault()
-    
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error('Les mots de passe ne correspondent pas')
-      return
-    }
-    
-    if (passwordData.newPassword.length < 6) {
-      toast.error('Le mot de passe doit contenir au moins 6 caractères')
-      return
-    }
-    
-    setPasswordLoading(true)
-    
+  const handlePasswordChange = async (data) => {
     try {
       const response = await fetch(getApiUrl('/api/change-password'), {
         method: 'POST',
@@ -121,13 +122,13 @@ const ProfileEditor = () => {
           'x-user-id': user?.id
         },
         body: JSON.stringify({
-          currentPassword: passwordData.currentPassword,
-          newPassword: passwordData.newPassword,
+          currentPassword: data.currentPassword,
+          newPassword: data.newPassword,
           userId: user?.id
         })
       })
-      
-      const result = await response.json()
+  
+      const result = await safeJsonParse(response)
       
       if (result.success) {
         toast.success('Mot de passe modifié avec succès!')
@@ -137,7 +138,8 @@ const ProfileEditor = () => {
         toast.error(result.error || 'Erreur lors du changement de mot de passe')
       }
     } catch (error) {
-      toast.error('Erreur lors du changement de mot de passe')
+      console.error('Erreur changement mot de passe:', error)
+      toast.error('Erreur lors du changement de mot de passe: ' + error.message)
     } finally {
       setPasswordLoading(false)
     }

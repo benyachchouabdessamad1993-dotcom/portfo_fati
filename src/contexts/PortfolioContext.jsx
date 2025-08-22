@@ -13,7 +13,8 @@ export const usePortfolio = () => {
 }
 
 // Données par défaut du portfolio
-const defaultPortfolioData = {
+// Export explicite pour éviter les références non définies
+export const defaultPortfolioData = {
   profile: {
     nom: 'LAKRAMI',
     prenom: 'Fatima',
@@ -533,10 +534,18 @@ const defaultPortfolioData = {
 }
 
 export const PortfolioProvider = ({ children }) => {
-  const [portfolioData, setPortfolioData] = useState(defaultPortfolioData)
+  const { user } = useAuth()
+  const [portfolioData, setPortfolioData] = useState(defaultPortfolioData || {})
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const { user } = useAuth()
+
+  // Vérification de sécurité
+  useEffect(() => {
+    if (!portfolioData || !portfolioData.sections) {
+      console.warn('portfolioData non définie, utilisation des données par défaut')
+      setPortfolioData(defaultPortfolioData)
+    }
+  }, [])
 
   // Extraire loadPortfolioData comme fonction du composant
   // Ajouter cette fonction utilitaire au début du fichier
@@ -548,7 +557,19 @@ export const PortfolioProvider = ({ children }) => {
     return `${cleanBaseUrl}${cleanEndpoint}`
   }
 
-  // Dans la fonction loadPortfolioData, après avoir défini portfolioData
+  // Fonction utilitaire pour parser les réponses JSON de manière sécurisée
+  const safeJsonParse = async (response) => {
+    const contentType = response.headers.get('content-type')
+    if (!contentType || !contentType.includes('application/json')) {
+      // Si ce n'est pas du JSON, lire le texte pour debug
+      const text = await response.text()
+      console.error('Réponse non-JSON reçue:', text.substring(0, 200))
+      throw new Error(`Réponse invalide du serveur (${response.status}): ${response.statusText}`)
+    }
+    return await response.json()
+  }
+
+  // Dans la fonction loadPortfolioData
   const loadPortfolioData = async () => {
     try {
       setLoading(true)
@@ -563,11 +584,27 @@ export const PortfolioProvider = ({ children }) => {
 
       // Récupérer le profil depuis l'API
       const profileResponse = await fetch(getApiUrl(`/api/profile/${user.id}`))
-      const profileData = profileResponse.ok ? await profileResponse.json() : {}
+      let profileData = {}
+      if (profileResponse.ok) {
+        try {
+          profileData = await safeJsonParse(profileResponse)
+        } catch (error) {
+          console.error('Erreur parsing profil:', error)
+          profileData = {}
+        }
+      }
 
       // Récupérer les sections depuis l'API
       const sectionsResponse = await fetch(getApiUrl(`/api/sections/${user.id}`))
-      const apiSections = sectionsResponse.ok ? await sectionsResponse.json() : []
+      let apiSections = []
+      if (sectionsResponse.ok) {
+        try {
+          apiSections = await safeJsonParse(sectionsResponse)
+        } catch (error) {
+          console.error('Erreur parsing sections:', error)
+          apiSections = []
+        }
+      }
 
       // Fusionner les sections par défaut avec celles de l'API
       const mergedSections = defaultPortfolioData.sections.map(defaultSection => {
@@ -630,7 +667,7 @@ export const PortfolioProvider = ({ children }) => {
         body: JSON.stringify(profileData)
       })
 
-      const result = await response.json()
+      const result = await safeJsonParse(response)
 
       if (!result.success) {
         throw new Error(result.error)
@@ -846,4 +883,48 @@ export const PortfolioProvider = ({ children }) => {
       {children}
     </PortfolioContext.Provider>
   )
+}
+
+const updateProfile = async (profileData) => {
+  try {
+    setLoading(true)
+    
+    if (!user?.id) {
+      throw new Error('Utilisateur non authentifié')
+    }
+  
+    // Appel API pour mettre à jour le profil
+    const response = await fetch(getApiUrl(`/api/profile/${user.id}`), {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(profileData)
+    })
+  
+    const result = await safeJsonParse(response)
+  
+    if (!result.success) {
+      throw new Error(result.error)
+    }
+  
+    // Recharger les données depuis l'API pour assurer la synchronisation
+    await loadPortfolioData()
+    
+    // Convertir l'erreur en chaîne
+    const errorMessage = error instanceof Error ? error.message : String(error)
+    setError(errorMessage)
+    
+    // Mettre à jour le favicon si une nouvelle photo a été uploadée
+    if (profileData.photo) {
+      updateFavicon(profileData.photo)
+    }
+    
+    return { success: true }
+  } catch (error) {
+    console.error('Erreur lors de la mise à jour du profil:', error)
+    return { success: false, error }
+  } finally {
+    setLoading(false)
+  }
 }
