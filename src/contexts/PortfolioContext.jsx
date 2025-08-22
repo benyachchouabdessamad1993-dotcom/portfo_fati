@@ -552,6 +552,33 @@ export const PortfolioProvider = ({ children }) => {
   const loadPortfolioData = async () => {
     try {
       setLoading(true)
+      setError(null)
+      
+      if (!user?.id) {
+        // Si pas d'utilisateur connecté, utiliser les données par défaut
+        setPortfolioData(defaultPortfolioData)
+        setDefaultFavicon()
+        return
+      }
+
+      // Récupérer le profil depuis l'API
+      const profileResponse = await fetch(getApiUrl(`/api/profile/${user.id}`))
+      const profileData = profileResponse.ok ? await profileResponse.json() : {}
+
+      // Récupérer les sections depuis l'API
+      const sectionsResponse = await fetch(getApiUrl(`/api/sections/${user.id}`))
+      const apiSections = sectionsResponse.ok ? await sectionsResponse.json() : []
+
+      // Fusionner les sections par défaut avec celles de l'API
+      const mergedSections = defaultPortfolioData.sections.map(defaultSection => {
+        const apiSection = apiSections.find(s => s.id === defaultSection.id)
+        return apiSection ? { ...defaultSection, ...apiSection } : defaultSection
+      })
+
+      // Ajouter les sections supplémentaires de l'API qui ne sont pas dans les défauts
+      const additionalSections = apiSections.filter(apiSection => 
+        !defaultPortfolioData.sections.find(defaultSection => defaultSection.id === apiSection.id)
+      )
       
       setPortfolioData({
         profile: {
@@ -571,8 +598,10 @@ export const PortfolioProvider = ({ children }) => {
       
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error)
+      setError(error.message)
       // Fallback sur les données par défaut complètes
       setPortfolioData(defaultPortfolioData)
+      setDefaultFavicon()
     } finally {
       setLoading(false)
     }
