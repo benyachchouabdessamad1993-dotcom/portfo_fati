@@ -27,6 +27,29 @@ const Header = () => {
   const [imageError, setImageError] = useState(false)
   const [imageRetryCount, setImageRetryCount] = useState(0)
 
+  // Fonction pour gérer les erreurs d'image
+  const handleImageError = () => {
+    console.log('Erreur de chargement image, retry count:', imageRetryCount)
+    if (imageRetryCount < 3) {
+      setImageRetryCount(prev => prev + 1)
+      // Réessayer après un délai
+      setTimeout(() => {
+        setImageError(false)
+      }, 1000)
+    } else {
+      setImageError(true)
+    }
+  }
+
+  // Fonction pour obtenir l'URL de l'image avec retry
+  const getImageUrlWithRetry = (imagePath) => {
+    const baseUrl = getImageUrl(imagePath)
+    if (imageRetryCount > 0) {
+      return `${baseUrl}?t=${Date.now()}`
+    }
+    return baseUrl
+  }
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
@@ -231,12 +254,3 @@ const Header = () => {
 }
 
 export default Header
-
-
-const getImageUrlWithRetry = (imagePath) => {
-  const baseUrl = getImageUrl(imagePath)
-  if (imageRetryCount > 0) {
-    return `${baseUrl}?t=${Date.now()}`
-  }
-  return baseUrl
-}
