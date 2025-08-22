@@ -11,3 +11,4 @@ Application web pour portfolio académique avec interface d'administration.
 npm install
 npm run dev:full
 ```
+# Correction portfolioData appliquée
