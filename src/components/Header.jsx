@@ -26,11 +26,12 @@ const Header = () => {
   const [activeSection, setActiveSection] = useState('home')
   const [imageError, setImageError] = useState(false)
   const [imageRetryCount, setImageRetryCount] = useState(0)
-
+  const [imageLoaded, setImageLoaded] = useState(false)
+  
   // Fonction pour gérer les erreurs d'image
   const handleImageError = () => {
     console.log('Erreur de chargement image, retry count:', imageRetryCount)
-    if (imageRetryCount < 3) {
+    if (imageRetryCount < 3 && !imageLoaded) {
       setImageRetryCount(prev => prev + 1)
       // Réessayer après un délai
       setTimeout(() => {
@@ -40,7 +41,7 @@ const Header = () => {
       setImageError(true)
     }
   }
-
+  
   // Fonction pour obtenir l'URL de l'image avec retry
   const getImageUrlWithRetry = (imagePath) => {
     const baseUrl = getImageUrl(imagePath)
@@ -111,6 +112,7 @@ const Header = () => {
                           console.log('Image chargée avec succès:', imageUrl)
                           setImageError(false)
                           setImageRetryCount(0)
+                          setImageLoaded(true) // Marquer l'image comme chargée
                         }}
                       />
                     );
