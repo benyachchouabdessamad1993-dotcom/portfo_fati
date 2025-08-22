@@ -24,6 +24,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  const [imageError, setImageError] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
