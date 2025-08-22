@@ -64,70 +64,43 @@ const ProfileEditor = () => {
         const formData = new FormData()
         formData.append('photo', file)
         
-        const response = await fetch('/api/upload/photo', {
+        // Ajouter la fonction getApiUrl
+        const getApiUrl = (endpoint) => {
+          const baseUrl = import.meta.env.VITE_API_URL || ''
+          return `${baseUrl}${endpoint}`
+        }
+        
+        // Remplacer ligne 67
+        const response = await fetch(getApiUrl('/api/upload/photo'), {
+        
+        // Remplacer ligne 104
+        const response = await fetch(getApiUrl('/api/change-password'), {
           method: 'POST',
-          body: formData
+          headers: {
+            'Content-Type': 'application/json',
+            'x-user-id': user?.id
+          },
+          body: JSON.stringify({
+            currentPassword: passwordData.currentPassword,
+            newPassword: passwordData.newPassword,
+            userId: user?.id
+          })
         })
         
         const result = await response.json()
         
         if (result.success) {
-          // Stocker l'URL du serveur pour la soumission
-          setPhotoPreview(result.url)
-          toast.success('Photo uploadée avec succès!')
+          toast.success('Mot de passe modifié avec succès!')
+          setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' })
+          setShowPasswordSection(false)
         } else {
-          toast.error('Erreur lors de l\'upload: ' + result.error)
+          toast.error(result.error || 'Erreur lors du changement de mot de passe')
         }
       } catch (error) {
-        toast.error('Erreur lors de l\'upload de la photo')
-        console.error('Upload error:', error)
+        toast.error('Erreur lors du changement de mot de passe')
+      } finally {
+        setPasswordLoading(false)
       }
-    }
-  }
-
-  const handlePasswordChange = async (e) => {
-    e.preventDefault()
-    
-    if (passwordData.newPassword !== passwordData.confirmPassword) {
-      toast.error('Les nouveaux mots de passe ne correspondent pas')
-      return
-    }
-    
-    if (passwordData.newPassword.length < 6) {
-      toast.error('Le nouveau mot de passe doit contenir au moins 6 caractères')
-      return
-    }
-    
-    setPasswordLoading(true)
-    
-    try {
-      const response = await fetch('/api/change-password', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-user-id': user?.id
-        },
-        body: JSON.stringify({
-          currentPassword: passwordData.currentPassword,
-          newPassword: passwordData.newPassword,
-          userId: user?.id
-        })
-      })
-      
-      const result = await response.json()
-      
-      if (result.success) {
-        toast.success('Mot de passe modifié avec succès!')
-        setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' })
-        setShowPasswordSection(false)
-      } else {
-        toast.error(result.error || 'Erreur lors du changement de mot de passe')
-      }
-    } catch (error) {
-      toast.error('Erreur lors du changement de mot de passe')
-    } finally {
-      setPasswordLoading(false)
-    }
   }
 
   const onSubmit = async (data) => {

@@ -41,7 +41,14 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Appel API pour l'authentification
-      const response = await fetch('/api/auth/signin', {
+      // Ajouter la fonction getApiUrl
+      const getApiUrl = (endpoint) => {
+        const baseUrl = import.meta.env.VITE_API_URL || ''
+        return `${baseUrl}${endpoint}`
+      }
+      
+      // Remplacer ligne 44
+      const response = await fetch(getApiUrl('/api/auth/signin'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
