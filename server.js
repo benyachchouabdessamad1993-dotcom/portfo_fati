@@ -803,6 +803,9 @@ app.post('/api/change-password', authenticateToken, async (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // En production, servir les fichiers statiques du frontend
+// SUPPRIMER tout ce bloc (lignes 890-907) :
+
+// Servir les fichiers statiques
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // ⚠️ CONFIGURATION DE PRODUCTION (DOIT ÊTRE EN DERNIER)
