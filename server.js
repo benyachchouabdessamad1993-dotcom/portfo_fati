@@ -879,19 +879,19 @@ app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
  //   if (!req.file) {
  //     return res.status(400).json({ success: false, error: 'Aucun fichier fourni' })
  //   }
-    
-    const fileUrl = `/uploads/${req.file.filename}`
-    
-    res.json({ 
-      success: true, 
-      url: fileUrl,
-      filename: req.file.filename
-    })
-  } catch (error) {
-    console.error('Erreur upload:', error)
-    res.status(500).json({ success: false, error: 'Erreur lors de l\'upload' })
-  }
-})
+//    
+//    const fileUrl = `/uploads/${req.file.filename}`
+//    
+//    res.json({ 
+//      success: true, 
+//      url: fileUrl,
+//      filename: req.file.filename
+//    })
+//  } catch (error) {
+//    console.error('Erreur upload:', error)
+//    res.status(500).json({ success: false, error: 'Erreur lors de l\'upload' })
+//  }
+//})
 
 app.get('/api/check-image/:filename', (req, res) => {
   try {
