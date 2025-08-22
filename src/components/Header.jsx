@@ -78,7 +78,7 @@ const Header = () => {
                     <img
                       src={getImageUrl(portfolioData.profile.photo)}
                       alt="Photo de profil"
-                      className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
+                      className="w-14 h-14 rounded-full object-cover border-2 border-white/20"
                       onError={(e) => {
                         e.target.style.display = 'none'
                         e.target.nextElementSibling.style.display = 'block'
@@ -94,7 +94,7 @@ const Header = () => {
                   
                   {/* Avatar par défaut (fallback) */}
                   <UserCircleIcon 
-                    className={`w-8 h-8 text-white/80 ${
+                    className={`w-14 h-14 text-white/80 ${
                       portfolioData?.profile?.photo ? 'hidden' : 'block'
                     }`}
                   />
