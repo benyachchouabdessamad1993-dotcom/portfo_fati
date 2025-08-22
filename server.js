@@ -804,7 +804,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // En production, servir les fichiers statiques du frontend
 // SUPPRIMER tout ce bloc (lignes 895-910) :
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+//app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // ⚠️ CONFIGURATION DE PRODUCTION (DOIT ÊTRE EN DERNIER)
 if (process.env.NODE_ENV === 'production') {
@@ -874,11 +874,11 @@ app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
 })
 
 // Routes d'upload (lignes 859-892)
-app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ success: false, error: 'Aucun fichier fourni' })
-    }
+//app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
+ // try {
+ //   if (!req.file) {
+ //     return res.status(400).json({ success: false, error: 'Aucun fichier fourni' })
+ //   }
     
     const fileUrl = `/uploads/${req.file.filename}`
     
@@ -909,19 +909,19 @@ app.get('/api/check-image/:filename', (req, res) => {
 })
 
 // Configuration de production (UNE SEULE FOIS)
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+//app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'dist')))
+//if (process.env.NODE_ENV === 'production') {
+ // app.use(express.static(path.join(__dirname, 'dist')))
   
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
-  })
-}
+ // app.get('*', (req, res) => {
+ //   res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+ // })
+//}
 
-app.listen(PORT, () => {
-  console.log(`Serveur démarré sur le port ${PORT}`)
-  console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
-})
+//app.listen(PORT, () => {
+ // console.log(`Serveur démarré sur le port ${PORT}`)
+  ////console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
+//})
 
 // FIN DU FICHIER - Rien après cette ligne
