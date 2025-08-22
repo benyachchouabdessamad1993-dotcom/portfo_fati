@@ -803,9 +803,7 @@ app.post('/api/change-password', authenticateToken, async (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // En production, servir les fichiers statiques du frontend
-// SUPPRIMER tout ce bloc (lignes 890-907) :
-
-// Servir les fichiers statiques
+// SUPPRIMER tout ce bloc (lignes 895-910) :
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // ⚠️ CONFIGURATION DE PRODUCTION (DOIT ÊTRE EN DERNIER)
@@ -875,7 +873,26 @@ app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
   }
 })
 
-// Route pour vérifier l'existence d'une image
+// Routes d'upload (lignes 859-892)
+app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'Aucun fichier fourni' })
+    }
+    
+    const fileUrl = `/uploads/${req.file.filename}`
+    
+    res.json({ 
+      success: true, 
+      url: fileUrl,
+      filename: req.file.filename
+    })
+  } catch (error) {
+    console.error('Erreur upload:', error)
+    res.status(500).json({ success: false, error: 'Erreur lors de l\'upload' })
+  }
+})
+
 app.get('/api/check-image/:filename', (req, res) => {
   try {
     const { filename } = req.params
@@ -891,14 +908,12 @@ app.get('/api/check-image/:filename', (req, res) => {
   }
 })
 
-// Servir les fichiers statiques
+// Configuration de production (UNE SEULE FOIS)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
-// ⚠️ CONFIGURATION DE PRODUCTION (DOIT ÊTRE EN DERNIER)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')))
   
-  // ⚠️ CATCH-ALL HANDLER (DOIT ÊTRE LA DERNIÈRE ROUTE)
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
   })
@@ -908,3 +923,5 @@ app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`)
   console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
 })
+
+// FIN DU FICHIER - Rien après cette ligne
