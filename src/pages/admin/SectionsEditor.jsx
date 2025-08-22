@@ -18,9 +18,16 @@ const SectionsEditor = () => {
   const [isEditorOpen, setIsEditorOpen] = useState(false)
 
   const handleToggleVisibility = async (sectionId, visible) => {
-    const result = await updateSection(sectionId, { visible: !visible })
-    if (result.success) {
-      toast.success(`Section ${!visible ? 'affichée' : 'masquée'}`)
+    try {
+      const result = await updateSection(sectionId, { visible: !visible })
+      if (result && result.success) {
+        toast.success(`Section ${!visible ? 'affichée' : 'masquée'}`)
+      } else {
+        toast.error(result?.error || 'Erreur lors de la modification de la visibilité')
+      }
+    } catch (error) {
+      console.error('Erreur lors de la modification de la visibilité:', error)
+      toast.error('Erreur lors de la modification de la visibilité')
     }
   }
 
@@ -35,26 +42,40 @@ const SectionsEditor = () => {
   }
 
   const handleDeleteSection = async (sectionId) => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette section ?')) {
-      const result = await deleteSection(sectionId)
-      if (result.success) {
-        toast.success('Section supprimée')
+    try {
+      if (window.confirm('Êtes-vous sûr de vouloir supprimer cette section ?')) {
+        const result = await deleteSection(sectionId)
+        if (result && result.success) {
+          toast.success('Section supprimée')
+        } else {
+          toast.error(result?.error || 'Erreur lors de la suppression de la section')
+        }
       }
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error)
+      toast.error('Erreur lors de la suppression de la section')
     }
   }
 
   const handleSaveSection = async (sectionData) => {
-    let result
-    if (editingSection) {
-      result = await updateSection(editingSection.id, sectionData)
-    } else {
-      result = await addSection(sectionData)
-    }
-    
-    if (result.success) {
-      toast.success(editingSection ? 'Section mise à jour' : 'Section ajoutée')
-      setIsEditorOpen(false)
-      setEditingSection(null)
+    try {
+      let result
+      if (editingSection) {
+        result = await updateSection(editingSection.id, sectionData)
+      } else {
+        result = await addSection(sectionData)
+      }
+      
+      if (result && result.success) {
+        toast.success(editingSection ? 'Section mise à jour' : 'Section ajoutée')
+        setIsEditorOpen(false)
+        setEditingSection(null)
+      } else {
+        toast.error(result?.error || 'Erreur lors de la sauvegarde de la section')
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error)
+      toast.error('Erreur lors de la sauvegarde de la section')
     }
   }
 

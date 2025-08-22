@@ -708,6 +708,33 @@ app.delete('/api/sections/:userId/:sectionId', (req, res) => {
   }
 })
 
+// Route pour réorganiser les sections
+app.put('/api/sections/reorder', (req, res) => {
+  try {
+    const { sections } = req.body
+    
+    if (!sections || !Array.isArray(sections)) {
+      return res.status(400).json({ success: false, error: 'Données de sections invalides' })
+    }
+
+    // Utiliser une transaction pour mettre à jour l'ordre de toutes les sections
+    const updateOrder = db.prepare('UPDATE sections SET section_order = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?')
+    
+    const transaction = db.transaction((sectionsToUpdate) => {
+      for (const section of sectionsToUpdate) {
+        updateOrder.run(section.order, section.id)
+      }
+    })
+    
+    transaction(sections)
+    
+    res.json({ success: true, message: 'Ordre des sections mis à jour avec succès' })
+  } catch (error) {
+    console.error('Erreur lors de la réorganisation des sections:', error)
+    res.status(500).json({ success: false, error: 'Erreur lors de la réorganisation des sections' })
+  }
+})
+
 // Initialiser la base de données
 initDatabase()
 

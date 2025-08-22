@@ -9,7 +9,9 @@ import {
 
 const HeroSection = ({ profile }) => {
   const getImageUrl = (photoUrl) => {
-    if (!photoUrl) return ''
+    if (!photoUrl || photoUrl.trim() === '' || photoUrl === 'null') {
+      return null
+    }
     
     // Si c'est une URL locale (commence par /uploads/), ajouter le cache-busting
     if (photoUrl.startsWith('/uploads/')) {

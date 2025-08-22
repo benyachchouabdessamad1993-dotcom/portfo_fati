@@ -131,38 +131,43 @@ const ProfileEditor = () => {
   }
 
   const onSubmit = async (data) => {
-    let photoUrl = data.photo
-    
-    if (photoFile && photoPreview) {
-      // Si photoPreview commence par /uploads/, c'est une URL valide du serveur
-      if (photoPreview.startsWith('/uploads/')) {
-        photoUrl = photoPreview
-      } else if (photoPreview.startsWith('data:')) {
-        // Vérifier que les données base64 ne sont pas trop volumineuses
-        if (photoPreview.length > 1000000) { // 1MB en base64
-          toast.error('La photo est trop volumineuse. Veuillez choisir une image plus petite.')
-          return
+    try {
+      let photoUrl = data.photo
+      
+      if (photoFile && photoPreview) {
+        // Si photoPreview commence par /uploads/, c'est une URL valide du serveur
+        if (photoPreview.startsWith('/uploads/')) {
+          photoUrl = photoPreview
+        } else if (photoPreview.startsWith('data:')) {
+          // Vérifier que les données base64 ne sont pas trop volumineuses
+          if (photoPreview.length > 1000000) { // 1MB en base64
+            throw new Error('La photo est trop volumineuse. Veuillez choisir une image plus petite.')
+          }
+          photoUrl = photoPreview
+        } else {
+          photoUrl = photoPreview
         }
-        photoUrl = photoPreview
+      } else if (data.photo && data.photo.trim()) {
+        photoUrl = data.photo
       } else {
-        photoUrl = photoPreview
+        photoUrl = portfolioData.profile.photo
       }
-    } else if (data.photo && data.photo.trim()) {
-      photoUrl = data.photo
-    } else {
-      photoUrl = portfolioData.profile.photo
-    }
 
-    const result = await updateProfile({
-      ...data,
-      photo: photoUrl,
-      mission: missionContent
-    })
-    if (result.success) {
-      toast.success('Profil mis à jour avec succès!')
-      setPhotoPreview(photoUrl)
-    } else {
-      toast.error('Erreur lors de la mise à jour du profil')
+      const result = await updateProfile({
+        ...data,
+        photo: photoUrl,
+        mission: missionContent
+      })
+      
+      if (result && result.success) {
+        toast.success('Profil mis à jour avec succès!')
+        setPhotoPreview(photoUrl)
+      } else {
+        toast.error(result?.error || 'Erreur lors de la mise à jour du profil')
+      }
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde:', error)
+      toast.error(error.message || 'Erreur lors de la mise à jour du profil')
     }
   }
 

@@ -73,25 +73,24 @@ const Header = () => {
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-full blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-white/30 group-hover:ring-blue-400/70 transition-all duration-300 shadow-xl">
-                  <img 
-                    src={getImageUrl(portfolioData?.profile?.photo)} 
-                    alt="Profile" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    onError={(e) => {
-                      console.log('Erreur de chargement image header:', e.target.src)
-                      console.log('Photo URL originale:', portfolioData?.profile?.photo)
-                      
-                      // Masquer l'image et afficher l'icône de fallback
-                      e.target.style.display = 'none'
-                      e.target.nextSibling.style.display = 'flex'
-                    }}
-                    onLoad={(e) => {
-                      console.log('Image header chargée avec succès:', e.target.src)
-                      e.target.style.display = 'block'
-                      e.target.nextSibling.style.display = 'none'
-                    }}
-                  />
-                  <div className="w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center" style={{display: 'none'}}>
+                  // Dans le JSX du Header
+                  {getImageUrl(portfolioData?.profile?.photo) ? (
+                    <img 
+                      src={getImageUrl(portfolioData?.profile?.photo)} 
+                      alt="Profile" 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      onError={(e) => {
+                        // Masquer l'image et afficher l'icône de fallback
+                        e.target.style.display = 'none'
+                        e.target.nextSibling.style.display = 'flex'
+                      }}
+                      onLoad={(e) => {
+                        e.target.style.display = 'block'
+                        e.target.nextSibling.style.display = 'none'
+                      }}
+                    />
+                  ) : null}
+                  <div className="w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center" style={{display: getImageUrl(portfolioData?.profile?.photo) ? 'none' : 'flex'}}>
                     <UserCircleIcon className="h-8 w-8 text-white" />
                   </div>
                 </div>

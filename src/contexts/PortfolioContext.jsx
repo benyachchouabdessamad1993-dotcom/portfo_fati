@@ -27,7 +27,7 @@ const defaultPortfolioData = {
     youtube: 'https://www.youtube.com/results?search_query=stic+laboratory',
     linkedin: 'https://www.linkedin.com/in/fatima-lakrami-96ab23155/',
     researchgate: 'https://www.researchgate.net/profile/Fatima-Lakrami-3',
-    photo: '', // Remplacer l'URL Pexels par une chaîne vide
+    photo: null, // Utiliser null au lieu d'une chaîne vide
     mission: 'Contribuer à l\'avancement des technologies de l\'information et de la communication dans l\'éducation, en développant des solutions innovantes pour l\'enseignement et la formation à l\'ère numérique.',
     langues: [
       { nom: 'Arabe', niveau: 'Natif', color: 'from-blue-500 to-cyan-500' },
@@ -619,6 +619,8 @@ export const PortfolioProvider = ({ children }) => {
       console.error('Erreur lors du chargement des données:', error)
       // Fallback sur les données par défaut complètes
       setPortfolioData(defaultPortfolioData)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -636,7 +638,7 @@ export const PortfolioProvider = ({ children }) => {
       }
 
       // Appel API pour mettre à jour le profil
-      const response = await fetch(`/api/profile/${user.id}`, {
+      const response = await fetch(getApiUrl(`/api/profile/${user.id}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -671,7 +673,7 @@ export const PortfolioProvider = ({ children }) => {
       }
 
       // Appel API pour mettre à jour la section
-      const response = await fetch(`/api/sections/${user.id}/${sectionId}`, {
+      const response = await fetch(getApiUrl(`/api/sections/${user.id}/${sectionId}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -711,7 +713,7 @@ export const PortfolioProvider = ({ children }) => {
       }
 
       // Appel API pour ajouter la section
-      const response = await fetch(`/api/sections/${user.id}`, {
+      const response = await fetch(getApiUrl(`/api/sections/${user.id}`), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -759,7 +761,7 @@ export const PortfolioProvider = ({ children }) => {
       }
 
       // Appel API pour supprimer la section
-      const response = await fetch(`/api/sections/${user.id}/${sectionId}`, {
+      const response = await fetch(getApiUrl(`/api/sections/${user.id}/${sectionId}`), {
         method: 'DELETE'
       })
 
@@ -791,33 +793,41 @@ export const PortfolioProvider = ({ children }) => {
         throw new Error('Utilisateur non authentifié')
       }
 
-      // Mettre à jour l'ordre via l'API
-      for (let i = 0; i < sections.length; i++) {
-        const section = sections[i]
-        const response = await fetch(`/api/sections/${user.id}/${section.id}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ ...section, order: i + 1 })
-        })
-        
-        const result = await response.json()
-        
-        if (!result.success) {
-          throw new Error(result.error)
-        }
+      // Préparer les données pour la route de réorganisation
+      const sectionsData = sections.map((section, index) => ({
+        id: section.id,
+        order: index + 1
+      }))
+
+      // Utiliser la route spécifique pour la réorganisation
+      const response = await fetch(getApiUrl('/api/sections/reorder'), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sections: sectionsData })
+      })
+      
+      const result = await response.json()
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Erreur lors de la réorganisation')
       }
 
+      // Mettre à jour l'état local
       setPortfolioData(prev => ({
         ...prev,
-        sections
+        sections: sections.map((section, index) => ({
+          ...section,
+          order: index + 1
+        }))
       }))
       
       return { success: true }
     } catch (error) {
       console.error('Erreur lors de la réorganisation des sections:', error)
-      return { success: false, error }
+      setError(error.message)
+      return { success: false, error: error.message }
     } finally {
       setLoading(false)
     }
@@ -826,6 +836,8 @@ export const PortfolioProvider = ({ children }) => {
   const value = {
     portfolioData,
     loading,
+    error,
+    loadPortfolioData,
     updateProfile,
     updateSection,
     addSection,
