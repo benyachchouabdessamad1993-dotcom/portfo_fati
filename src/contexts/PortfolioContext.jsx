@@ -701,6 +701,13 @@ export const PortfolioProvider = ({ children }) => {
         throw new Error('Utilisateur non authentifié')
       }
 
+      // Obtenir la longueur actuelle des sections via l'état
+      let currentSectionsLength = 0
+      setPortfolioData(prev => {
+        currentSectionsLength = prev.sections.length
+        return prev
+      })
+
       // Appel API pour ajouter la section
       const response = await fetch(getApiUrl(`/api/sections/${user.id}`), {
         method: 'POST',
@@ -709,7 +716,7 @@ export const PortfolioProvider = ({ children }) => {
         },
         body: JSON.stringify({
           ...sectionData,
-          order: portfolioData.sections.length + 1,
+          order: currentSectionsLength + 1,
           visible: true
         })
       })
@@ -722,7 +729,7 @@ export const PortfolioProvider = ({ children }) => {
 
       const newSection = {
         id: result.id,
-        order: portfolioData.sections.length + 1,
+        order: currentSectionsLength + 1,
         visible: true,
         ...sectionData
       }
