@@ -828,7 +828,6 @@ const storage = multer.diskStorage({
     cb(null, uploadDir)
   },
   filename: function (req, file, cb) {
-    // Générer un nom unique pour éviter les conflits
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
     const ext = path.extname(file.originalname)
     cb(null, 'profile-' + uniqueSuffix + ext)
@@ -849,27 +848,15 @@ const upload = multer({
   }
 })
 
-// Servir les fichiers statiques depuis le dossier uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+// ✅ TOUTES LES ROUTES API DOIVENT ÊTRE ICI (AVANT LE CATCH-ALL)
 
-// En production, servir les fichiers statiques du frontend
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'dist')))
-  
-  // Gérer les routes React Router (doit être en dernier)
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
-  })
-}
-
-// Nouvelle route pour l'upload de photos
+// Route pour l'upload de photos
 app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, error: 'Aucun fichier fourni' })
     }
     
-    // Retourner l'URL relative du fichier
     const fileUrl = `/uploads/${req.file.filename}`
     
     res.json({ 
@@ -882,7 +869,8 @@ app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
     res.status(500).json({ success: false, error: 'Erreur lors de l\'upload' })
   }
 })
-// Ajouter cette route après les autres routes
+
+// Route pour vérifier l'existence d'une image
 app.get('/api/check-image/:filename', (req, res) => {
   try {
     const { filename } = req.params
@@ -896,4 +884,22 @@ app.get('/api/check-image/:filename', (req, res) => {
   } catch (error) {
     res.status(500).json({ exists: false, error: error.message })
   }
+})
+
+// Servir les fichiers statiques
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
+// ⚠️ CONFIGURATION DE PRODUCTION (DOIT ÊTRE EN DERNIER)
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'dist')))
+  
+  // ⚠️ CATCH-ALL HANDLER (DOIT ÊTRE LA DERNIÈRE ROUTE)
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  })
+}
+
+app.listen(PORT, () => {
+  console.log(`Serveur démarré sur le port ${PORT}`)
+  console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
 })
