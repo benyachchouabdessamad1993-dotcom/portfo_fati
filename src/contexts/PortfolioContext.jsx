@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext'
+import { updateFavicon, setDefaultFavicon } from '../utils/faviconUtils'
 
 const PortfolioContext = createContext({})
 
@@ -547,70 +548,10 @@ export const PortfolioProvider = ({ children }) => {
     return `${cleanBaseUrl}${cleanEndpoint}`
   }
 
+  // Dans la fonction loadPortfolioData, après avoir défini portfolioData
   const loadPortfolioData = async () => {
     try {
       setLoading(true)
-      // Vérifier que l'utilisateur est connecté
-      if (!user?.id) {
-        console.log('Utilisateur non connecté, utilisation des données par défaut')
-        setPortfolioData(defaultPortfolioData)
-        return
-      }
-      
-      // Récupérer le profil
-      const profileResponse = await fetch(getApiUrl(`/api/profile/${user.id}`))
-      let profileData = null
-      
-      if (profileResponse.ok) {
-        const responseText = await profileResponse.text()
-        if (responseText) {
-          try {
-            profileData = JSON.parse(responseText)
-          } catch (jsonError) {
-            console.error('Erreur parsing JSON profil:', jsonError)
-          }
-        }
-      } else {
-        console.error('Échec de récupération du profil, status:', profileResponse.status)
-      }
-      
-      // Récupération des sections avec gestion d'erreur améliorée
-      const sectionsResponse = await fetch(getApiUrl(`/api/sections/${user.id}`))
-      let sectionsData = null
-      
-      if (sectionsResponse.ok) {
-        const responseText = await sectionsResponse.text()
-        if (responseText) {
-          try {
-            sectionsData = JSON.parse(responseText)
-          } catch (jsonError) {
-            console.error('Erreur parsing JSON sections:', jsonError)
-          }
-        }
-      }
-      // Fusionner les sections de l'API avec les sections par défaut
-      const mergedSections = defaultPortfolioData.sections.map(defaultSection => {
-        const apiSection = sectionsData?.find(section => section.id === defaultSection.id)
-        
-        if (apiSection) {
-          const hasEmptyContent = !apiSection.content || 
-            (Array.isArray(apiSection.content) && apiSection.content.length === 0) ||
-            (typeof apiSection.content === 'string' && apiSection.content.trim() === '')
-          
-          return {
-            ...defaultSection,
-            ...apiSection,
-            content: hasEmptyContent ? defaultSection.content : apiSection.content
-          }
-        }
-        
-        return defaultSection
-      })
-      
-      // Ajouter les sections de l'API qui n'existent pas dans les données par défaut
-      const additionalSections = sectionsData?.filter(apiSection => 
-        !defaultPortfolioData.sections.find(defaultSection => defaultSection.id === apiSection.id)
-      ) || []
       
       setPortfolioData({
         profile: {
@@ -619,6 +560,15 @@ export const PortfolioProvider = ({ children }) => {
         },
         sections: [...mergedSections, ...additionalSections]
       })
+      
+      // Mettre à jour le favicon avec l'image de profil
+      const photo = profileData?.photo || defaultPortfolioData.profile.photo
+      if (photo) {
+        updateFavicon(photo)
+      } else {
+        setDefaultFavicon()
+      }
+      
     } catch (error) {
       console.error('Erreur lors du chargement des données:', error)
       // Fallback sur les données par défaut complètes
@@ -633,6 +583,7 @@ export const PortfolioProvider = ({ children }) => {
     loadPortfolioData()
   }, [user])
 
+  // Dans la fonction updateProfile, après la mise à jour réussie
   const updateProfile = async (profileData) => {
     try {
       setLoading(true)
@@ -658,6 +609,11 @@ export const PortfolioProvider = ({ children }) => {
 
       // Recharger les données depuis l'API pour assurer la synchronisation
       await loadPortfolioData()
+      
+      // Mettre à jour le favicon si une nouvelle photo a été uploadée
+      if (profileData.photo) {
+        updateFavicon(profileData.photo)
+      }
       
       return { success: true }
     } catch (error) {

@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import App from './App.jsx'
 import './index.css'
+import { setDefaultFavicon } from './utils/faviconUtils'
 
 // Supprimer les avertissements findDOMNode en développement
 if (import.meta.env.DEV) {
@@ -13,6 +14,9 @@ if (import.meta.env.DEV) {
     originalWarn(...args);
   };
 }
+
+// Définir le favicon par défaut au démarrage
+setDefaultFavicon()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

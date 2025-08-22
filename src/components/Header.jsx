@@ -73,27 +73,31 @@ const Header = () => {
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-full blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-white/30 group-hover:ring-blue-400/70 transition-all duration-300 shadow-xl">
+                  {/* Image de profil */}
                   {portfolioData?.profile?.photo ? (
-                    <img 
-                      src={getImageUrl(portfolioData.profile.photo)} 
-                      alt={`${portfolioData?.profile?.prenom || 'Profile'} ${portfolioData?.profile?.nom || ''}`}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    <img
+                      src={getImageUrl(portfolioData.profile.photo)}
+                      alt="Photo de profil"
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white/20"
                       onError={(e) => {
-                        console.log('Erreur chargement image:', e.target.src)
                         e.target.style.display = 'none'
-                        const fallback = e.target.parentNode.querySelector('.fallback-avatar')
-                        if (fallback) fallback.style.display = 'flex'
+                        e.target.nextElementSibling.style.display = 'block'
                       }}
                       onLoad={(e) => {
                         e.target.style.display = 'block'
-                        const fallback = e.target.parentNode.querySelector('.fallback-avatar')
-                        if (fallback) fallback.style.display = 'none'
+                        if (e.target.nextElementSibling) {
+                          e.target.nextElementSibling.style.display = 'none'
+                        }
                       }}
                     />
                   ) : null}
-                  <div className="fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center" style={{display: portfolioData?.profile?.photo ? 'none' : 'flex'}}>
-                    <UserCircleIcon className="h-8 w-8 text-white" />
-                  </div>
+                  
+                  {/* Avatar par défaut (fallback) */}
+                  <UserCircleIcon 
+                    className={`w-8 h-8 text-white/80 ${
+                      portfolioData?.profile?.photo ? 'hidden' : 'block'
+                    }`}
+                  />
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-r from-emerald-400 to-green-400 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
               </div>
