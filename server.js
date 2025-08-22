@@ -570,36 +570,73 @@ app.put('/api/profile/:userId', (req, res) => {
     const { userId } = req.params
     const profileData = req.body
     
-    const stmt = db.prepare(`
-      UPDATE profiles 
-      SET nom = ?, prenom = ?, nationalite = ?, gsm = ?, grade = ?, fonction = ?, 
-          email = ?, affiliation = ?, laboratoire = ?, equipe = ?, mission = ?, 
-          photo = ?, linkedin = ?, researchgate = ?, youtube = ?, updated_at = CURRENT_TIMESTAMP
-      WHERE user_id = ?
-    `)
+    // Vérifier si le profil existe
+    const existingProfile = db.prepare('SELECT id FROM profiles WHERE user_id = ?').get(userId)
     
-    const result = stmt.run(
-      profileData.nom,
-      profileData.prenom,
-      profileData.nationalite,
-      profileData.gsm,
-      profileData.grade,
-      profileData.fonction,
-      profileData.email,
-      profileData.affiliation,
-      profileData.laboratoire,
-      profileData.equipe,
-      profileData.mission,
-      profileData.photo,
-      profileData.linkedin,
-      profileData.researchgate,
-      profileData.youtube,
-      userId
-    )
-    
-    res.json({ success: true, changes: result.changes })
+    if (existingProfile) {
+      // Mettre à jour le profil existant
+      const stmt = db.prepare(`
+        UPDATE profiles 
+        SET nom = ?, prenom = ?, nationalite = ?, gsm = ?, grade = ?, fonction = ?, 
+            email = ?, affiliation = ?, laboratoire = ?, equipe = ?, mission = ?, 
+            photo = ?, linkedin = ?, researchgate = ?, youtube = ?, updated_at = CURRENT_TIMESTAMP
+        WHERE user_id = ?
+      `)
+      
+      const result = stmt.run(
+        profileData.nom,
+        profileData.prenom,
+        profileData.nationalite,
+        profileData.gsm,
+        profileData.grade,
+        profileData.fonction,
+        profileData.email,
+        profileData.affiliation,
+        profileData.laboratoire,
+        profileData.equipe,
+        profileData.mission,
+        profileData.photo,
+        profileData.linkedin,
+        profileData.researchgate,
+        profileData.youtube,
+        userId
+      )
+      
+      res.json({ success: true, changes: result.changes })
+    } else {
+      // Créer un nouveau profil
+      const stmt = db.prepare(`
+        INSERT INTO profiles (
+          user_id, nom, prenom, nationalite, gsm, grade, fonction, 
+          email, affiliation, laboratoire, equipe, mission, 
+          photo, linkedin, researchgate, youtube
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+      
+      const result = stmt.run(
+        userId,
+        profileData.nom,
+        profileData.prenom,
+        profileData.nationalite,
+        profileData.gsm,
+        profileData.grade,
+        profileData.fonction,
+        profileData.email,
+        profileData.affiliation,
+        profileData.laboratoire,
+        profileData.equipe,
+        profileData.mission,
+        profileData.photo,
+        profileData.linkedin,
+        profileData.researchgate,
+        profileData.youtube
+      )
+      
+      res.json({ success: true, changes: result.changes, created: true })
+    }
   } catch (error) {
-    res.status(500).json({ success: false, error: 'Erreur lors de la mise à jour du profil' })
+    console.error('Erreur lors de la mise à jour du profil:', error)
+    res.status(500).json({ success: false, error: 'Erreur lors de la mise à jour du profil', details: error.message })
   }
 })
 
