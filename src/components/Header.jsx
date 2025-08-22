@@ -73,24 +73,24 @@ const Header = () => {
               <div className="relative">
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 rounded-full blur-sm opacity-60 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative w-14 h-14 rounded-full overflow-hidden ring-2 ring-white/30 group-hover:ring-blue-400/70 transition-all duration-300 shadow-xl">
-                  // Dans le JSX du Header
                   {getImageUrl(portfolioData?.profile?.photo) ? (
                     <img 
                       src={getImageUrl(portfolioData?.profile?.photo)} 
                       alt="Profile" 
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       onError={(e) => {
-                        // Masquer l'image et afficher l'icône de fallback
                         e.target.style.display = 'none'
-                        e.target.nextSibling.style.display = 'flex'
+                        const fallback = e.target.parentNode.querySelector('.fallback-avatar')
+                        if (fallback) fallback.style.display = 'flex'
                       }}
                       onLoad={(e) => {
                         e.target.style.display = 'block'
-                        e.target.nextSibling.style.display = 'none'
+                        const fallback = e.target.parentNode.querySelector('.fallback-avatar')
+                        if (fallback) fallback.style.display = 'none'
                       }}
                     />
                   ) : null}
-                  <div className="w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center" style={{display: getImageUrl(portfolioData?.profile?.photo) ? 'none' : 'flex'}}>
+                  <div className="fallback-avatar w-full h-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center" style={{display: getImageUrl(portfolioData?.profile?.photo) ? 'none' : 'flex'}}>
                     <UserCircleIcon className="h-8 w-8 text-white" />
                   </div>
                 </div>
@@ -130,9 +130,9 @@ const Header = () => {
                   <span className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 scale-0 group-hover:scale-100 transition-transform duration-300 -z-10"></span>
                 </a>
               )
-            })}
-            
-            <div className="ml-6 pl-6 border-l border-slate-300/30">
+            })}            
+            {/* Suppression du bouton admin - lignes 135-147 à retirer */}
+            {/* <div className="ml-6 pl-6 border-l border-slate-300/30">
               <Link
                 to="/login"
                 className={`group flex items-center px-6 py-3 rounded-2xl font-semibold text-sm transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-2xl ${
@@ -146,7 +146,7 @@ const Header = () => {
                   Admin
                 </span>
               </Link>
-            </div>
+            </div> */}
           </div>
 
           {/* Menu burger moderne pour tablettes */}
@@ -206,8 +206,6 @@ const Header = () => {
                     </a>
                   )
                 })}
-                
-                {/* Bouton admin supprimé pour des raisons de sécurité */}
               </div>
             </div>
           </div>
