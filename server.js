@@ -536,21 +536,32 @@ app.get('/api/profile/:userId', (req, res) => {
     const { userId } = req.params
     let profile = db.prepare('SELECT * FROM profiles WHERE user_id = ?').get(userId)
     
-    // Si aucun profil n'existe, créer un profil par défaut
     if (!profile) {
-      const stmt = db.prepare(`
-        INSERT INTO profiles (user_id, nom, prenom, nationalite, gsm, grade, fonction, email, affiliation, laboratoire, equipe, mission, photo, linkedin, researchgate, youtube)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `)
-      
-      stmt.run(userId, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
-      profile = db.prepare('SELECT * FROM profiles WHERE user_id = ?').get(userId)
+      // Retourner un profil vide par défaut sans INSERT défectueux
+      profile = {
+        user_id: parseInt(userId),
+        nom: '',
+        prenom: '',
+        nationalite: '',
+        gsm: '',
+        grade: '',
+        fonction: '',
+        email: '',
+        affiliation: '',
+        laboratoire: '',
+        equipe: '',
+        mission: '',
+        photo: '',
+        linkedin: '',
+        researchgate: '',
+        youtube: ''
+      }
     }
     
     res.json(profile)
   } catch (error) {
-    console.error('Erreur serveur profil:', error)
-    res.status(500).json({ error: 'Erreur lors de la récupération du profil', details: error.message })
+    console.error('Erreur lors de la récupération du profil:', error)
+    res.status(500).json({ error: 'Erreur serveur lors de la récupération du profil' })
   }
 })
 
