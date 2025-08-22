@@ -284,7 +284,7 @@ const ProfileEditor = () => {
                   </label>
                   <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {['Arabe (Natif)', 'Français (Courant)', 'Anglais (Professionnel)'].map((lang, index) => (
+                      {['Arabe', 'Français', 'Anglais', 'Espagnol'].map((lang, index) => (
                         <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
                           {lang}
                         </span>

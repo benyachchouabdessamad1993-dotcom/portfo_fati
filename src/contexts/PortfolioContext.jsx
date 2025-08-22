@@ -30,9 +30,10 @@ const defaultPortfolioData = {
     photo: null, // Utiliser null au lieu d'une chaîne vide
     mission: 'Contribuer à l\'avancement des technologies de l\'information et de la communication dans l\'éducation, en développant des solutions innovantes pour l\'enseignement et la formation à l\'ère numérique.',
     langues: [
-      { nom: 'Arabe', niveau: 'Natif', color: 'from-blue-500 to-cyan-500' },
-      { nom: 'Français', niveau: 'Courant', color: 'from-green-500 to-teal-500' },
-      { nom: 'Anglais', niveau: 'Professionnel', color: 'from-purple-500 to-pink-500' }
+      { nom: 'Arabe', color: 'from-blue-500 to-cyan-500' },
+      { nom: 'Français', color: 'from-green-500 to-teal-500' },
+      { nom: 'Anglais', color: 'from-purple-500 to-pink-500' },
+      { nom: 'Espagnol', color: 'from-orange-500 to-red-500' }
     ]
   },
   sections: [

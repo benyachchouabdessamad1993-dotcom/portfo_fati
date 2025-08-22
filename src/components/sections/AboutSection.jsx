@@ -152,13 +152,16 @@ const AboutSection = ({ profile }) => {
                 </span>
                 <div className="flex flex-wrap gap-2">
                   <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full text-sm font-medium">
-                    Arabe (Natif)
+                    Arabe
                   </span>
                   <span className="px-3 py-1 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-full text-sm font-medium">
-                    Français (Courant)
+                    Français
                   </span>
                   <span className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-medium">
-                    Anglais (Professionnel)
+                    Anglais
+                  </span>
+                  <span className="px-3 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-medium">
+                    Espagnol
                   </span>
                 </div>
               </div>

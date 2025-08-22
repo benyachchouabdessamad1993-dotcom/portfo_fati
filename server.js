@@ -489,7 +489,7 @@ const initDatabase = () => {
         console.log(`Section '${section.title}' créée`)
       }
     })
-  } // ← Accolade fermante manquante pour le bloc if (!adminExists)
+  } // ← Accolade fermante pour le bloc if (!adminExists) - AJOUTÉE
 } // ← Accolade fermante pour la fonction initDatabase
 
 // Routes d'authentification
@@ -540,10 +540,10 @@ app.get('/api/profile/:userId', (req, res) => {
     if (!profile) {
       const stmt = db.prepare(`
         INSERT INTO profiles (user_id, nom, prenom, nationalite, gsm, grade, fonction, email, affiliation, laboratoire, equipe, mission, photo, linkedin, researchgate, youtube)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '')
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `)
       
-      stmt.run(userId)
+      stmt.run(userId, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '')
       profile = db.prepare('SELECT * FROM profiles WHERE user_id = ?').get(userId)
     }
     
@@ -799,29 +799,7 @@ app.post('/api/change-password', authenticateToken, async (req, res) => {
   }
 })
 
-// Servir les fichiers statiques depuis le dossier uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-
-// En production, servir les fichiers statiques du frontend
-// SUPPRIMER tout ce bloc (lignes 895-910) :
-//app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
-
-// ⚠️ CONFIGURATION DE PRODUCTION (DOIT ÊTRE EN DERNIER)
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'dist')))
-  
-  // ⚠️ CATCH-ALL HANDLER (DOIT ÊTRE LA DERNIÈRE ROUTE)
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
-  })
-}
-
-app.listen(PORT, () => {
-  console.log(`Serveur démarré sur le port ${PORT}`)
-  console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
-})
-
-// Configuration multer pour l'upload de fichiers
+// Configuration multer pour l'upload de fichiers (DÉPLACER ICI)
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadDir = path.join(__dirname, 'uploads')
@@ -851,9 +829,7 @@ const upload = multer({
   }
 })
 
-// ✅ TOUTES LES ROUTES API DOIVENT ÊTRE ICI (AVANT LE CATCH-ALL)
-
-// Route pour l'upload de photos
+// Routes API d'upload (UNE SEULE FOIS)
 app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
   try {
     if (!req.file) {
@@ -873,26 +849,6 @@ app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
   }
 })
 
-// Routes d'upload (lignes 859-892)
-//app.post('/api/upload/photo', upload.single('photo'), (req, res) => {
- // try {
- //   if (!req.file) {
- //     return res.status(400).json({ success: false, error: 'Aucun fichier fourni' })
- //   }
-//    
-//    const fileUrl = `/uploads/${req.file.filename}`
-//    
-//    res.json({ 
-//      success: true, 
-//      url: fileUrl,
-//      filename: req.file.filename
-//    })
-//  } catch (error) {
-//    console.error('Erreur upload:', error)
-//    res.status(500).json({ success: false, error: 'Erreur lors de l\'upload' })
-//  }
-//})
-
 app.get('/api/check-image/:filename', (req, res) => {
   try {
     const { filename } = req.params
@@ -908,20 +864,26 @@ app.get('/api/check-image/:filename', (req, res) => {
   }
 })
 
-// Configuration de production (UNE SEULE FOIS)
-//app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+// Servir les fichiers statiques depuis le dossier uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
-//if (process.env.NODE_ENV === 'production') {
- // app.use(express.static(path.join(__dirname, 'dist')))
+// En production, servir les fichiers statiques du frontend
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'dist')))
   
- // app.get('*', (req, res) => {
- //   res.sendFile(path.join(__dirname, 'dist', 'index.html'))
- // })
-//}
+  // IMPORTANT: Le catch-all doit être en dernier, après toutes les routes API
+  app.get('*', (req, res) => {
+    // Vérifier que ce n'est pas une route API
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ error: 'Route API non trouvée' })
+    }
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+  })
+}
 
-//app.listen(PORT, () => {
- // console.log(`Serveur démarré sur le port ${PORT}`)
-  ////console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
-//})
+app.listen(PORT, () => {
+  console.log(`Serveur démarré sur le port ${PORT}`)
+  console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
+})
 
-// FIN DU FICHIER - Rien après cette ligne
+// FIN DU FICHIER - Supprimer tout le reste
