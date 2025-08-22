@@ -99,7 +99,10 @@ const ProfileEditor = () => {
         const result = await safeJsonParse(response)
         
         if (result.success) {
-          setPhotoPreview(result.photoUrl)
+          // Nettoyer l'URL blob temporaire
+          URL.revokeObjectURL(previewUrl)
+          // Utiliser result.url au lieu de result.photoUrl
+          setPhotoPreview(result.url)
           toast.success('Photo uploadée avec succès!')
         } else {
           toast.error(result.error || 'Erreur lors de l\'upload de la photo')
