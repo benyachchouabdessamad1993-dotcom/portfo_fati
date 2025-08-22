@@ -803,12 +803,13 @@ app.post('/api/change-password', authenticateToken, async (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // En production, servir les fichiers statiques du frontend
-// SUPPRIMER CES LIGNES (890-905) :
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
+// ⚠️ CONFIGURATION DE PRODUCTION (DOIT ÊTRE EN DERNIER)
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')))
   
+  // ⚠️ CATCH-ALL HANDLER (DOIT ÊTRE LA DERNIÈRE ROUTE)
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
   })
