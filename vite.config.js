@@ -8,12 +8,11 @@ export default defineConfig({
     host: true
   },
   build: {
+    outDir: 'dist',
+    sourcemap: false,
     rollupOptions: {
       output: {
-        // Force un nouveau hash à chaque build
-        entryFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
-        chunkFileNames: `assets/[name]-[hash]-${Date.now()}.js`,
-        assetFileNames: `assets/[name]-[hash]-${Date.now()}.[ext]`
+        manualChunks: undefined
       }
     }
   }
