@@ -803,16 +803,17 @@ app.post('/api/change-password', authenticateToken, async (req, res) => {
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 
 // En production, servir les fichiers statiques du frontend
+// SUPPRIMER CES LIGNES (890-905) :
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'dist')))
   
-  // Gérer les routes React Router (doit être en dernier)
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
   })
 }
 
-// Start server (KEEP ONLY THIS ONE)
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`)
   console.log(`Mode: ${process.env.NODE_ENV || 'development'}`)
