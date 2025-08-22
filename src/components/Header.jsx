@@ -25,6 +25,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
   const [imageError, setImageError] = useState(false)
+  const [imageRetryCount, setImageRetryCount] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -231,3 +232,29 @@ const Header = () => {
 }
 
 export default Header
+
+
+const getImageUrlWithRetry = (imagePath) => {
+  const baseUrl = getImageUrl(imagePath)
+  if (imageRetryCount > 0) {
+    return `${baseUrl}?t=${Date.now()}`
+  }
+  return baseUrl
+}
+
+// Dans le JSX :
+{portfolioData?.profile?.photo && !imageError ? (
+  <img
+    src={getImageUrlWithRetry(portfolioData.profile.photo)}
+    alt="Photo de profil"
+    className="w-14 h-14 rounded-full object-cover border-2 border-white/20"
+    onError={handleImageError}
+    onLoad={() => {
+      console.log('Image chargée avec succès:', getImageUrlWithRetry(portfolioData.profile.photo))
+      setImageError(false)
+      setImageRetryCount(0)
+    }}
+  />
+) : (
+  <UserCircleIcon className="w-14 h-14 text-white/80" />
+)}
