@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { usePortfolio } from '../contexts/PortfolioContext'
 import { getImageUrl } from '../utils/imageUtils'
 import { 
-  Bars3Icon, 
-  XMarkIcon, 
-  Cog6ToothIcon, 
   UserCircleIcon,
-  ChevronDownIcon,
   HomeIcon,
   UserIcon,
   BeakerIcon,
