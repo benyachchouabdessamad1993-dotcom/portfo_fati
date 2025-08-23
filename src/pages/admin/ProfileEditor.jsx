@@ -669,15 +669,3 @@ const ProfileEditor = () => {
 }
 
 export default ProfileEditor
-
-// Dans handlePhotoUpload, après l'upload réussi :
-if (result.url) {
-// Nettoyer l'URL blob temporaire
-URL.revokeObjectURL(previewUrl)
-
-// Utiliser l'URL serveur (pas photoUrl)
-setPhotoPreview(result.url)
-setMessage('Photo uploadée avec succès !')
-} else {
-throw new Error('URL de photo manquante dans la réponse')
-}
