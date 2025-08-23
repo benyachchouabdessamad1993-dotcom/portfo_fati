@@ -20,6 +20,22 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
+  
+  // Fonction getImageUrl locale (comme dans HeroSection)
+  const getImageUrl = (photoUrl) => {
+    if (!photoUrl || photoUrl.trim() === '' || photoUrl === 'null') {
+      return null
+    }
+    
+    // Si c'est une URL locale (commence par /uploads/), ajouter le cache-busting
+    if (photoUrl.startsWith('/uploads/')) {
+      return `${photoUrl}?t=${Date.now()}`
+    }
+    
+    // Pour les URLs externes, vérifier s'il y a déjà des paramètres
+    const separator = photoUrl.includes('?') ? '&' : '?'
+    return `${photoUrl}${separator}t=${Date.now()}`
+  }
   const [imageError, setImageError] = useState(false)
   const [imageRetryCount, setImageRetryCount] = useState(0)
   const [imageLoaded, setImageLoaded] = useState(false)
