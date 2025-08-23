@@ -29,18 +29,17 @@ const Header = () => {
   const [imageLoaded, setImageLoaded] = useState(false)
   
   // Fonction pour gérer les erreurs d'image
-  const handleImageError = () => {
-    console.log('Erreur de chargement image, retry count:', imageRetryCount)
-    if (imageRetryCount < 3 && !imageLoaded) {
+  const handleImageError = useCallback(() => {
+    if (imageRetryCount < 3) {
       setImageRetryCount(prev => prev + 1)
-      // Réessayer après un délai
+      // Augmenter le délai entre les tentatives
       setTimeout(() => {
         setImageError(false)
-      }, 1000)
+      }, Math.pow(2, imageRetryCount) * 1000) // 1s, 2s, 4s
     } else {
       setImageError(true)
     }
-  }
+  }, [imageRetryCount])
   
   // Fonction pour obtenir l'URL de l'image avec retry
   const getImageUrlWithRetry = (imagePath) => {
