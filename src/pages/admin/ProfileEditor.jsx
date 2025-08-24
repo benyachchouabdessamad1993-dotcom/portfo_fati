@@ -4,6 +4,7 @@ import { usePortfolio } from '../../contexts/PortfolioContext'
 import { useAuth } from '../../contexts/AuthContext'
 import WysiwygEditor from '../../components/admin/WysiwygEditor'
 import toast from 'react-hot-toast'
+import { getApiUrl, safeJsonParse } from '../../utils/api'
 import { 
   UserIcon,
   EnvelopeIcon,
@@ -44,24 +45,6 @@ const ProfileEditor = () => {
   })
   const [passwordLoading, setPasswordLoading] = React.useState(false)
 
-  // Ajouter la fonction getApiUrl au niveau du composant
-  const getApiUrl = (endpoint) => {
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
-    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
-    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
-    return `${cleanBaseUrl}${cleanEndpoint}`
-  }
-
-  // Ajouter la même fonction utilitaire
-  const safeJsonParse = async (response) => {
-    const contentType = response.headers.get('content-type')
-    if (!contentType || !contentType.includes('application/json')) {
-      const text = await response.text()
-      console.error('Réponse non-JSON reçue:', text.substring(0, 200))
-      throw new Error(`Réponse invalide du serveur (${response.status}): ${response.statusText}`)
-    }
-    return await response.json()
-  }
 
   const handlePhotoUpload = async (event) => {
     const file = event.target.files[0]

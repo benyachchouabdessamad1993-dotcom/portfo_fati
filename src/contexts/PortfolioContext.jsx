@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext'
 import { updateFavicon, setDefaultFavicon } from '../utils/faviconUtils'
+import { getApiUrl, safeJsonParse } from '../utils/api'
 
 export const PortfolioContext = createContext({})
 
@@ -798,25 +799,6 @@ export const PortfolioProvider = ({ children }) => {
   }, [])
 
   // Extraire loadPortfolioData comme fonction du composant
-  // Ajouter cette fonction utilitaire au début du fichier
-  const getApiUrl = (endpoint) => {
-    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
-    const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
-    const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
-    return `${cleanBaseUrl}${cleanEndpoint}`
-  }
-
-  // Fonction utilitaire pour parser les réponses JSON de manière sécurisée
-  const safeJsonParse = async (response) => {
-    const contentType = response.headers.get('content-type')
-    if (!contentType || !contentType.includes('application/json')) {
-      // Si ce n'est pas du JSON, lire le texte pour debug
-      const text = await response.text()
-      console.error('Réponse non-JSON reçue:', text.substring(0, 200))
-      throw new Error(`Réponse invalide du serveur (${response.status}): ${response.statusText}`)
-    }
-    return await response.json()
-  }
 
   // Dans la fonction loadPortfolioData
   const loadPortfolioData = async () => {

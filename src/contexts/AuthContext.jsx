@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
+import { getApiUrl, safeJsonParse } from '../utils/api'
 
 const AuthContext = createContext({})
 
@@ -44,8 +45,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Appel API pour l'authentification
-      // Configuration de l'URL API
-      const apiUrl = 'http://localhost:3001/api/auth/signin'
+      const apiUrl = getApiUrl('/api/auth/signin')
       console.log('URL API utilisée:', apiUrl)
       
       const response = await fetch(apiUrl, {
