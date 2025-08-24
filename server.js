@@ -47,131 +47,144 @@ console.log('Clés étrangères activées')
 const initDatabase = () => {
   console.log('=== INITIALISATION DE LA BASE DE DONNÉES ===')
   
-  // Table des utilisateurs
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      email TEXT UNIQUE NOT NULL,
-      password_hash TEXT NOT NULL,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `)
+  try {
+    // Table des utilisateurs
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `)
+    console.log('✅ Table users créée')
 
-  // Table des profils
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS profiles (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER NOT NULL,
-      nom TEXT,
-      prenom TEXT,
-      nationalite TEXT,
-      gsm TEXT,
-      grade TEXT,
-      fonction TEXT,
-      email TEXT,
-      affiliation TEXT,
-      laboratoire TEXT,
-      equipe TEXT,
-      mission TEXT,
-      photo TEXT,
-      linkedin TEXT,
-      researchgate TEXT,
-      youtube TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-    )
-  `)
+    // Table des profils
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS profiles (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        nom TEXT,
+        prenom TEXT,
+        nationalite TEXT,
+        gsm TEXT,
+        grade TEXT,
+        fonction TEXT,
+        email TEXT,
+        affiliation TEXT,
+        laboratoire TEXT,
+        equipe TEXT,
+        mission TEXT,
+        photo TEXT,
+        linkedin TEXT,
+        researchgate TEXT,
+        youtube TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+      )
+    `)
+    console.log('✅ Table profiles créée')
 
-  // Table des sections
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS sections (
-      id TEXT PRIMARY KEY,
-      user_id INTEGER NOT NULL,
-      title TEXT NOT NULL,
-      type TEXT NOT NULL,
-      content TEXT,
-      visible BOOLEAN DEFAULT 1,
-      section_order INTEGER DEFAULT 0,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
-    )
-  `)
+    // Table des sections
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS sections (
+        id TEXT PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        type TEXT NOT NULL,
+        content TEXT,
+        visible BOOLEAN DEFAULT 1,
+        section_order INTEGER DEFAULT 0,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+      )
+    `)
+    console.log('✅ Table sections créée')
 
-  // Créer l'utilisateur admin par défaut s'il n'existe pas
-  const adminExists = db.prepare('SELECT id FROM users WHERE email = ?').get('lakrami.f@ucd.ac.ma')
-  
-  console.log('Vérification utilisateur admin existant:', adminExists ? 'TROUVÉ' : 'NON TROUVÉ')
-  
-  let adminUserId;
-  
-  if (!adminExists) {
-    console.log('Création de l\'utilisateur admin...')
-    const hashedPassword = bcrypt.hashSync('admin123', 10)
-    const insertUser = db.prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)')
-    const result = insertUser.run('lakrami.f@ucd.ac.ma', hashedPassword)
-    adminUserId = result.lastInsertRowid;
+    // Créer l'utilisateur admin par défaut s'il n'existe pas
+    const adminExists = db.prepare('SELECT id FROM users WHERE email = ?').get('lakrami.f@ucd.ac.ma')
     
-    console.log('Utilisateur admin créé avec succès - ID:', adminUserId)
+    console.log('Vérification utilisateur admin existant:', adminExists ? 'TROUVÉ' : 'NON TROUVÉ')
     
-    // Créer le profil par défaut
-    const defaultProfile = {
-      user_id: adminUserId,
-      nom: 'LAKRAMI',
-      prenom: 'Fatima',
-      nationalite: 'Marocaine',
-      gsm: '+212 6 90 99 92 46',
-      grade: 'Maitre de conférence Habilité à la Faculté des Sciences d\'El Jadida',
-      fonction: 'Enseignant Chercheur',
-      email: 'lakrami.f@ucd.ac.ma',
-      affiliation: 'Département de Physique, Faculté des Sciences, Université Chouaib Doukkali',
-      laboratoire: 'Vice directrice du Laboratoire des Sciences et Technologies de l\'information et de la communication STIC, faculté des sciences, université Chouaib Doukkali',
-      equipe: 'Responsable d\'équipe de recherche : Technologies de l\'Information et de la Communication pour l\'Education et la Formation (TICEF)',
-      youtube: 'https://www.youtube.com/results?search_query=stic+laboratory',
-      linkedin: 'https://www.linkedin.com/in/fatima-lakrami-96ab23155/',
-      researchgate: 'https://www.researchgate.net/profile/Fatima-Lakrami-3',
-      photo: '',
-      mission: 'Contribuer à l\'avancement des technologies de l\'information et de la communication dans l\'éducation, en développant des solutions innovantes pour l\'enseignement et la formation à l\'ère numérique.'
+    let adminUserId
+    
+    if (!adminExists) {
+      console.log('Création de l\'utilisateur admin...')
+      const hashedPassword = bcrypt.hashSync('admin123', 10)
+      const insertUser = db.prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)')
+      const result = insertUser.run('lakrami.f@ucd.ac.ma', hashedPassword)
+      adminUserId = result.lastInsertRowid
+      
+      console.log('Utilisateur admin créé avec succès - ID:', adminUserId)
+      
+      // Créer le profil par défaut
+      const defaultProfile = {
+        user_id: adminUserId,
+        nom: 'LAKRAMI',
+        prenom: 'Fatima',
+        nationalite: 'Marocaine',
+        gsm: '+212 6 90 99 92 46',
+        grade: 'Maitre de conférence Habilité à la Faculté des Sciences d\'El Jadida',
+        fonction: 'Enseignant Chercheur',
+        email: 'lakrami.f@ucd.ac.ma',
+        affiliation: 'Département de Physique, Faculté des Sciences, Université Chouaib Doukkali',
+        laboratoire: 'Vice directrice du Laboratoire des Sciences et Technologies de l\'information et de la communication STIC, faculté des sciences, université Chouaib Doukkali',
+        equipe: 'Responsable d\'équipe de recherche : Technologies de l\'Information et de la Communication pour l\'Education et la Formation (TICEF)',
+        youtube: 'https://www.youtube.com/results?search_query=stic+laboratory',
+        linkedin: 'https://www.linkedin.com/in/fatima-lakrami-96ab23155/',
+        researchgate: 'https://www.researchgate.net/profile/Fatima-Lakrami-3',
+        photo: '',
+        mission: 'Contribuer à l\'avancement des technologies de l\'information et de la communication dans l\'éducation, en développant des solutions innovantes pour l\'enseignement et la formation à l\'ère numérique.'
+      }
+      
+      const insertProfile = db.prepare(`
+        INSERT INTO profiles (user_id, nom, prenom, nationalite, gsm, grade, fonction, email, affiliation, laboratoire, equipe, mission, photo, linkedin, researchgate, youtube)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `)
+      
+      insertProfile.run(
+        defaultProfile.user_id,
+        defaultProfile.nom,
+        defaultProfile.prenom,
+        defaultProfile.nationalite,
+        defaultProfile.gsm,
+        defaultProfile.grade,
+        defaultProfile.fonction,
+        defaultProfile.email,
+        defaultProfile.affiliation,
+        defaultProfile.laboratoire,
+        defaultProfile.equipe,
+        defaultProfile.mission,
+        defaultProfile.photo,
+        defaultProfile.linkedin,
+        defaultProfile.researchgate,
+        defaultProfile.youtube
+      )
+      
+      console.log('Profil par défaut créé avec succès')
+    } else {
+      adminUserId = adminExists.id
+      console.log('Utilisateur admin existant - ID:', adminUserId)
     }
     
-    const insertProfile = db.prepare(`
-      INSERT INTO profiles (user_id, nom, prenom, nationalite, gsm, grade, fonction, email, affiliation, laboratoire, equipe, mission, photo, linkedin, researchgate, youtube)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `)
+    // Vérifier que l'utilisateur a bien été créé/existe
+    const finalCheck = db.prepare('SELECT * FROM users WHERE email = ?').get('lakrami.f@ucd.ac.ma')
+    console.log('Vérification finale utilisateur:', finalCheck ? 'OK' : 'ERREUR')
+    if (finalCheck) {
+      console.log('Email:', finalCheck.email)
+      console.log('Password hash existe:', finalCheck.password_hash ? 'OUI' : 'NON')
+    }
     
-    insertProfile.run(
-      defaultProfile.user_id,
-      defaultProfile.nom,
-      defaultProfile.prenom,
-      defaultProfile.nationalite,
-      defaultProfile.gsm,
-      defaultProfile.grade,
-      defaultProfile.fonction,
-      defaultProfile.email,
-      defaultProfile.affiliation,
-      defaultProfile.laboratoire,
-      defaultProfile.equipe,
-      defaultProfile.mission,
-      defaultProfile.photo,
-      defaultProfile.linkedin,
-      defaultProfile.researchgate,
-      defaultProfile.youtube
-    )
+    console.log('=== INITIALISATION TERMINÉE AVEC SUCCÈS ===')
     
-    console.log('Profil par défaut créé avec succès')
-  } else {
-    adminUserId = adminExists.id
-    console.log('Utilisateur admin existant - ID:', adminUserId)
-  }
-  
-  // Vérifier que l'utilisateur a bien été créé/existe
-  const finalCheck = db.prepare('SELECT * FROM users WHERE email = ?').get('lakrami.f@ucd.ac.ma')
-  console.log('Vérification finale utilisateur:', finalCheck ? 'OK' : 'ERREUR')
-  if (finalCheck) {
-    console.log('Email:', finalCheck.email)
-    console.log('Password hash existe:', finalCheck.password_hash ? 'OUI' : 'NON')
+  } catch (error) {
+    console.error('=== ERREUR LORS DE L\'INITIALISATION ===')
+    console.error('Erreur:', error.message)
+    console.error('Stack:', error.stack)
+    throw error
   }
 }
 
