@@ -441,6 +441,7 @@ export const defaultPortfolioData = {
             "Gestion des risques"
           ]
         }
+        ,
         {
           id: 3,
           title: "Virtualisation & Cloud",
