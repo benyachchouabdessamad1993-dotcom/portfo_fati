@@ -153,16 +153,9 @@ const TeachingSection = ({ sections }) => {
                         <div className="relative z-10">
                           {/* Badge niveau et heures */}
                           <div className="flex items-center justify-between mb-4">
-                            <div className="flex flex-col space-y-1">
-                              <span className={`px-3 py-1 bg-gradient-to-r ${course.color || institution.color} text-white rounded-full text-xs font-semibold`}>
+                            <span className={`px-3 py-1 bg-gradient-to-r ${course.color || institution.color} text-white rounded-full text-xs font-semibold`}>
                               {course.level}
-                              </span>
-                              {course.semester && (
-                                <span className="text-xs text-slate-500 text-center">
-                                  {course.semester}
-                                </span>
-                              )}
-                            </div>
+                            </span>
                             {course.hours && (
                               <div className="flex items-center text-slate-500 text-sm">
                                 <ClockIcon className="h-4 w-4 mr-1" />
@@ -257,13 +250,13 @@ const TeachingSection = ({ sections }) => {
                     </div>
                     
                     <div className="space-y-4">
-                  {/* Établissement */}
-                  <div className="mb-4">
-                    <div className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-sm font-medium">
-                      <BuildingOffice2Icon className="h-4 w-4 mr-2" />
-                      {selectedCourse.establishment || 'Non spécifié'}
-                    </div>
-                  </div>
+                      {/* Établissement */}
+                      <div className="mb-4">
+                        <div className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-sm font-medium">
+                          <BuildingOffice2Icon className="h-4 w-4 mr-2" />
+                          {selectedCourse.establishment || 'Non spécifié'}
+                        </div>
+                      </div>
 
                       <div>
                         <span className="text-sm font-medium text-slate-500">Type de cours</span>
@@ -368,21 +361,9 @@ const TeachingSection = ({ sections }) => {
                         Évaluation continue
                       </div>
                       <div className="flex items-center">
-                    <p className="text-slate-600 text-sm mb-1">
-                      {institution.name === 'Faculté des Sciences d\'El Jadida' ? 'Cycles Licence et Master' :
-                       institution.name === 'ENSA d\'El Jadida' ? 'École Nationale des Sciences Appliquées' :
-                       institution.name === 'SUPEMIR' ? 'École Supérieure Privée d\'Ingénierie' :
-                       institution.name === 'ESEF d\'El Jadida' ? 'École Supérieure de l\'Enseignement et de la Formation' :
-                       institution.name === 'FLSH d\'El Jadida' ? 'Faculté des Lettres et des Sciences Humaines' :
-                       institution.name === 'EST de Sidi Bennour' ? 'École Supérieure de Technologie' :
-                       'Établissement d\'enseignement supérieur'}
-                    </p>
                         <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
                         Accompagnement personnalisé
-                      {institution.courses.length} cours • {institution.courses.reduce((total, course) => {
-                        const hours = course.hours?.replace('h', '') || '0'
-                        return total + (parseInt(hours) || 0)
-                      }, 0)}h total
+                      </div>
                     </div>
                   </div>
                 </div>
