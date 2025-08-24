@@ -32,10 +32,16 @@ app.use((req, res, next) => {
 
 // Créer ou ouvrir la base de données
 const dbPath = path.join(__dirname, 'portfolio.db')
+console.log('=== INITIALISATION BASE DE DONNÉES ===')
+console.log('Chemin de la base:', dbPath)
+console.log('Répertoire de travail:', __dirname)
+
 const db = new Database(dbPath)
+console.log('Base de données ouverte/créée avec succès')
 
 // Activer les clés étrangères
 db.pragma('foreign_keys = ON')
+console.log('Clés étrangères activées')
 
 // Initialiser les tables
 const initDatabase = () => {
