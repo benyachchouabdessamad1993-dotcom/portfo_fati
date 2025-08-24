@@ -1,13 +1,40 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { 
   AcademicCapIcon, 
   MapPinIcon, 
   EnvelopeIcon,
   PhoneIcon,
-  ArrowDownIcon
+  ArrowDownIcon,
+  UserCircleIcon
 } from '@heroicons/react/24/outline'
 
 const HeroSection = ({ profile }) => {
+  const [imageError, setImageError] = useState(false)
+  const [imageRetryCount, setImageRetryCount] = useState(0)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  
+  // Fonction pour gérer les erreurs d'image
+  const handleImageError = useCallback(() => {
+    if (imageRetryCount < 3) {
+      setImageRetryCount(prev => prev + 1)
+      // Augmenter le délai entre les tentatives
+      setTimeout(() => {
+        setImageError(false)
+      }, Math.pow(2, imageRetryCount) * 1000) // 1s, 2s, 4s
+    } else {
+      setImageError(true)
+    }
+  }, [imageRetryCount])
+  
+  // Fonction pour obtenir l'URL de l'image avec retry
+  const getImageUrlWithRetry = (imagePath) => {
+    const baseUrl = getImageUrl(imagePath)
+    if (imageRetryCount > 0) {
+      return `${baseUrl}?t=${Date.now()}`
+    }
+    return baseUrl
+  }
+
   const getImageUrl = (photoUrl) => {
     if (!photoUrl || photoUrl.trim() === '' || photoUrl === 'null') {
       return null
@@ -108,40 +135,24 @@ const HeroSection = ({ profile }) => {
                   <div className="absolute inset-2 bg-gradient-to-br from-white/15 to-white/5 rounded-[2rem] border border-white/20">
                     {/* Image principale */}
                     <div className="w-full h-full rounded-[1.8rem] overflow-hidden relative">
-                      <img
-                        src={getImageUrl(profile.photo)}
-                        alt={`${profile.prenom} ${profile.nom}`}
-                        className="w-full h-full object-cover object-center filter brightness-105 contrast-105 group-hover:scale-110 transition-transform duration-700"
-                        onError={(e) => {
-                          console.log('Erreur de chargement image:', e.target.src)
-                          console.log('Photo URL originale:', profile.photo)
-                          
-                          // Ne pas essayer de recharger si l'URL est vide
-                          if (!profile.photo || profile.photo.trim() === '') {
-                            console.warn('URL de photo vide, masquage de l\'image')
-                            e.target.style.display = 'none'
-                            return
-                          }
-                          
-                          // Essayer de recharger l'image une fois
-                          if (!e.target.dataset.retried) {
-                            e.target.dataset.retried = 'true'
-                            setTimeout(() => {
-                              const newUrl = getImageUrl(profile.photo)
-                              if (newUrl && newUrl !== e.target.src) {
-                                e.target.src = newUrl
-                              }
-                            }, 1000)
-                          } else {
-                            // Si l'image ne se charge toujours pas, la masquer
-                            e.target.style.display = 'none'
-                          }
-                        }}
-                        onLoad={(e) => {
-                          console.log('Image chargée avec succès:', e.target.src)
-                          e.target.style.display = 'block'
-                        }}
-                      />
+                      {profile.photo && !imageError ? (
+                        <img
+                          src={getImageUrlWithRetry(profile.photo)}
+                          alt={`${profile.prenom} ${profile.nom}`}
+                          className="w-full h-full object-cover object-center filter brightness-105 contrast-105 group-hover:scale-110 transition-transform duration-700"
+                          onError={handleImageError}
+                          onLoad={() => {
+                            console.log('Image chargée avec succès')
+                            setImageError(false)
+                            setImageRetryCount(0)
+                            setImageLoaded(true)
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300 flex items-center justify-center">
+                          <UserCircleIcon className="w-32 h-32 text-slate-400" />
+                        </div>
+                      )}
                       
                       {/* Overlay subtil */}
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
