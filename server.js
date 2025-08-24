@@ -496,7 +496,13 @@ app.put('/api/sections/reorder', (req, res) => {
 })
 
 // Initialiser la base de données
-initDatabase()
+try {
+  initDatabase()
+  console.log('✅ Base de données initialisée avec succès')
+} catch (error) {
+  console.error('❌ ERREUR CRITIQUE lors de l\'initialisation de la base:', error)
+  process.exit(1)
+}
 
 // Middleware d'authentification simple
 const authenticateToken = (req, res, next) => {
