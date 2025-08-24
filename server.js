@@ -255,7 +255,9 @@ app.get('/api/sections/:userId', (req, res) => {
     const sections = data.sections.filter(s => s.user_id == userId)
     const formattedSections = sections.map(section => ({
       ...section,
-      content: typeof section.content === 'string' ? JSON.parse(section.content) : section.content
+      content: typeof section.content === 'string' && (section.type === 'cards' || section.type === 'list') 
+        ? JSON.parse(section.content) 
+        : section.content
     }))
     
     res.json(formattedSections)
