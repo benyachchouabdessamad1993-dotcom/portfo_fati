@@ -153,9 +153,16 @@ const TeachingSection = ({ sections }) => {
                         <div className="relative z-10">
                           {/* Badge niveau et heures */}
                           <div className="flex items-center justify-between mb-4">
-                            <span className={`px-3 py-1 bg-gradient-to-r ${course.color || institution.color} text-white rounded-full text-xs font-semibold`}>
+                            <div className="flex flex-col space-y-1">
+                              <span className={`px-3 py-1 bg-gradient-to-r ${course.color || institution.color} text-white rounded-full text-xs font-semibold`}>
                               {course.level}
-                            </span>
+                              </span>
+                              {course.semester && (
+                                <span className="text-xs text-slate-500 text-center">
+                                  {course.semester}
+                                </span>
+                              )}
+                            </div>
                             {course.hours && (
                               <div className="flex items-center text-slate-500 text-sm">
                                 <ClockIcon className="h-4 w-4 mr-1" />
@@ -250,13 +257,13 @@ const TeachingSection = ({ sections }) => {
                     </div>
                     
                     <div className="space-y-4">
-                      {/* Établissement */}
-                      <div className="mb-4">
-                        <div className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-sm font-medium">
-                          <BuildingOffice2Icon className="h-4 w-4 mr-2" />
-                          {selectedCourse.establishment || 'Non spécifié'}
-                        </div>
-                      </div>
+                  {/* Établissement */}
+                  <div className="mb-4">
+                    <div className="inline-flex items-center px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-sm font-medium">
+                      <BuildingOffice2Icon className="h-4 w-4 mr-2" />
+                      {selectedCourse.establishment || 'Non spécifié'}
+                    </div>
+                  </div>
 
                       <div>
                         <span className="text-sm font-medium text-slate-500">Type de cours</span>
