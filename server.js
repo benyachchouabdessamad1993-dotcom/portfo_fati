@@ -18,6 +18,12 @@ app.use(cors())
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 
+// Middleware de logging pour debug
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`)
+  next()
+})
+
 // Servir les fichiers statiques en production
 // Remove these lines (20-22):
 // if (process.env.NODE_ENV === 'production') {
@@ -33,6 +39,8 @@ db.pragma('foreign_keys = ON')
 
 // Initialiser les tables
 const initDatabase = () => {
+  console.log('=== INITIALISATION DE LA BASE DE DONNÉES ===')
+  
   // Table des utilisateurs
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
@@ -89,15 +97,30 @@ const initDatabase = () => {
   // Créer l'utilisateur admin par défaut s'il n'existe pas
   const adminExists = db.prepare('SELECT id FROM users WHERE email = ?').get('lakrami.f@ucd.ac.ma')
   
+  console.log('Vérification utilisateur admin existant:', adminExists ? 'TROUVÉ' : 'NON TROUVÉ')
+  
   let adminUserId;
   
   if (!adminExists) {
+    console.log('Création de l\'utilisateur admin...')
     const hashedPassword = bcrypt.hashSync('admin123', 10)
     const insertUser = db.prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)')
     const result = insertUser.run('lakrami.f@ucd.ac.ma', hashedPassword)
     adminUserId = result.lastInsertRowid;
     
-    console.log('Utilisateur admin créé avec succès')
+    console.log('Utilisateur admin créé avec succès - ID:', adminUserId)
+  } else {
+    adminUserId = adminExists.id
+    console.log('Utilisateur admin existant - ID:', adminUserId)
+  }
+  
+  // Vérifier que l'utilisateur a bien été créé/existe
+  const finalCheck = db.prepare('SELECT * FROM users WHERE email = ?').get('lakrami.f@ucd.ac.ma')
+  console.log('Vérification finale utilisateur:', finalCheck ? 'OK' : 'ERREUR')
+  if (finalCheck) {
+    console.log('Email:', finalCheck.email)
+    console.log('Password hash existe:', finalCheck.password_hash ? 'OUI' : 'NON')
+  }
     
     // Créer le profil par défaut
     const defaultProfile = {
@@ -495,24 +518,35 @@ const initDatabase = () => {
 // Routes d'authentification
 app.post('/api/auth/signin', (req, res) => {
   try {
-    console.log('Tentative de connexion pour:', req.body.email)
+    console.log('=== TENTATIVE DE CONNEXION ===')
+    console.log('Email reçu:', req.body.email)
+    console.log('Password reçu:', req.body.password ? '[MASQUÉ]' : 'VIDE')
+    console.log('Body complet:', JSON.stringify(req.body, null, 2))
+    
     const { email, password } = req.body
     
     if (!email || !password) {
+      console.log('ERREUR: Email ou mot de passe manquant')
       return res.status(400).json({ success: false, error: 'Email et mot de passe requis' })
     }
 
     if (password.length < 6) {
+      console.log('ERREUR: Mot de passe trop court')
       return res.status(400).json({ success: false, error: 'Le mot de passe doit contenir au moins 6 caractères' })
     }
 
+    console.log('Recherche utilisateur dans la base...')
     const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email)
     
     if (!user) {
       console.log('Utilisateur non trouvé:', email)
+      // Lister tous les utilisateurs pour debug
+      const allUsers = db.prepare('SELECT email FROM users').all()
+      console.log('Utilisateurs existants:', allUsers.map(u => u.email))
       return res.status(401).json({ success: false, error: 'Utilisateur non trouvé' })
     }
     
+    console.log('Utilisateur trouvé, vérification du mot de passe...')
     const isValidPassword = bcrypt.compareSync(password, user.password_hash)
     
     if (!isValidPassword) {

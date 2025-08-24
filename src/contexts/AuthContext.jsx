@@ -30,6 +30,9 @@ export const AuthProvider = ({ children }) => {
   const signIn = async (email, password) => {
     try {
       setLoading(true)
+      console.log('=== TENTATIVE DE CONNEXION FRONTEND ===')
+      console.log('Email:', email)
+      console.log('Password length:', password?.length)
       
       // Validation côté client
       if (!email || !password) {
@@ -42,9 +45,8 @@ export const AuthProvider = ({ children }) => {
 
       // Appel API pour l'authentification
       // Configuration de l'URL API
-      const apiUrl = import.meta.env.VITE_API_URL 
-        ? `${import.meta.env.VITE_API_URL}/api/auth/signin`
-        : 'http://localhost:3001/api/auth/signin'
+      const apiUrl = 'http://localhost:3001/api/auth/signin'
+      console.log('URL API utilisée:', apiUrl)
       
       const response = await fetch(apiUrl, {
         method: 'POST',
@@ -54,7 +56,11 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password })
       })
 
+      console.log('Réponse serveur status:', response.status)
+      console.log('Réponse serveur ok:', response.ok)
+      
       const result = await response.json()
+      console.log('Réponse serveur:', result)
       
       if (!result.success) {
         throw new Error(result.error)
