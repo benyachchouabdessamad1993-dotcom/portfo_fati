@@ -10,6 +10,7 @@ import Dashboard from './pages/admin/Dashboard'
 import ProfileEditor from './pages/admin/ProfileEditor'
 import SectionsEditor from './pages/admin/SectionsEditor'
 import CoursesEditor from './pages/admin/CoursesEditor'
+import ProjectsEditor from './pages/admin/ProjectsEditor'
 import LanguagesEditor from './pages/admin/LanguagesEditor'
 import SectionsManager from './pages/admin/SectionsManager'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -44,6 +45,7 @@ function App() {
             <Route path="profile" element={<ProfileEditor />} />
             <Route path="sections" element={<SectionsEditor />} />
             <Route path="courses" element={<CoursesEditor />} />
+            <Route path="projects" element={<ProjectsEditor />} />
             <Route path="languages" element={<LanguagesEditor />} />
             <Route path="sections-manager" element={<SectionsManager />} />
           </Route>

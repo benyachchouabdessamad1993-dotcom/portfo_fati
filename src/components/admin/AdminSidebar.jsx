@@ -7,7 +7,8 @@ import {
   PhotoIcon,
   ChartBarIcon,
   AcademicCapIcon,
-  GlobeAltIcon
+  GlobeAltIcon,
+  RocketLaunchIcon
 } from '@heroicons/react/24/outline'
 
 const AdminSidebar = () => {
@@ -15,6 +16,7 @@ const AdminSidebar = () => {
     { name: 'Tableau de bord', href: '/admin', icon: ChartBarIcon, exact: true },
     { name: 'Profil', href: '/admin/profile', icon: UserIcon },
     { name: 'Mes Cours', href: '/admin/courses', icon: AcademicCapIcon },
+    { name: 'Mes Projets', href: '/admin/projects', icon: RocketLaunchIcon },
     { name: 'Langues', href: '/admin/languages', icon: GlobeAltIcon },
     { name: 'Éditeur Simple', href: '/admin/sections', icon: DocumentTextIcon },
     { name: 'Gestion Sections', href: '/admin/sections-manager', icon: PhotoIcon },
