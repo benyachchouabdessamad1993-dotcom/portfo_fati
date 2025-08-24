@@ -16,7 +16,8 @@ const AdminSidebar = () => {
     { name: 'Profil', href: '/admin/profile', icon: UserIcon },
     { name: 'Mes Cours', href: '/admin/courses', icon: AcademicCapIcon },
     { name: 'Langues', href: '/admin/languages', icon: GlobeAltIcon },
-    { name: 'Sections', href: '/admin/sections', icon: DocumentTextIcon },
+    { name: 'Éditeur Simple', href: '/admin/sections', icon: DocumentTextIcon },
+    { name: 'Gestion Sections', href: '/admin/sections-manager', icon: PhotoIcon },
   ]
 
   return (

@@ -11,6 +11,7 @@ import ProfileEditor from './pages/admin/ProfileEditor'
 import SectionsEditor from './pages/admin/SectionsEditor'
 import CoursesEditor from './pages/admin/CoursesEditor'
 import LanguagesEditor from './pages/admin/LanguagesEditor'
+import SectionsManager from './pages/admin/SectionsManager'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useEffect } from 'react'
 
@@ -44,6 +45,7 @@ function App() {
             <Route path="sections" element={<SectionsEditor />} />
             <Route path="courses" element={<CoursesEditor />} />
             <Route path="languages" element={<LanguagesEditor />} />
+            <Route path="sections-manager" element={<SectionsManager />} />
           </Route>
         </Routes>
       </PortfolioProvider>
