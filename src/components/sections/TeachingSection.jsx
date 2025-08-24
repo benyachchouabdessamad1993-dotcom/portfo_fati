@@ -452,7 +452,6 @@ const TeachingSection = ({ sections }) => {
         </div>
       </div>
     </>
-    </section>
   )
 }
 
