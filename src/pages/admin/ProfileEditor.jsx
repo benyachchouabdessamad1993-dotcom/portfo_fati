@@ -314,14 +314,14 @@ const ProfileEditor = () => {
                   </label>
                   <div className="p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {['Arabe', 'Français', 'Anglais', 'Espagnol'].map((lang, index) => (
-                        <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-                          {lang}
+                      {(portfolioData.profile.langues || []).map((lang, index) => (
+                        <span key={index} className={`px-3 py-1 bg-gradient-to-r ${lang.color} text-white rounded-full text-sm font-medium`}>
+                          {lang.nom}
                         </span>
                       ))}
                     </div>
                     <p className="text-xs text-blue-600">
-                      Pour modifier les langues, contactez l'administrateur système.
+                      Pour modifier les langues, utilisez la section <a href="/admin/languages" className="font-semibold underline">Gestion des Langues</a>.
                     </p>
                   </div>
                 </div>
