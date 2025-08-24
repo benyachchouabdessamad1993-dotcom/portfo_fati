@@ -397,6 +397,9 @@ export const defaultPortfolioData = {
             "Scripting PowerShell et Bash pour l'automatisation",
             "Gestion des Active Directory et politiques de groupe",
             "Configuration et maintenance des services de messagerie",
+            "Support technique",
+            "Optimisation système"
+          ],
           technologies: [
             "Windows Server 2012-2022",
             "Linux (Debian, Fedora, Kali)",
@@ -421,9 +424,6 @@ export const defaultPortfolioData = {
             "Support technique avancé",
             "Optimisation des performances"
           ]
-            "Support technique",
-            "Optimisation système"
-          ]
         },
         {
           id: 2,
@@ -442,19 +442,30 @@ export const defaultPortfolioData = {
             "Conformité et gouvernance sécurité (ISO 27001)"
           ],
           technologies: [
-            "Nessus, OpenVAS",
-            "Wireshark, Nmap",
-          technologies: [
             "IDS/IPS (Snort, Suricata)",
             "Firewalls (pfSense, Fortinet)",
             "PKI et certificats SSL/TLS",
             "VPN (OpenVPN, IPSec)"
           ],
+          outils: [
+            "Metasploit, Burp Suite",
+            "Nessus, OpenVAS",
+            "Wireshark, Nmap",
+            "SIEM (Splunk, ELK)"
+          ],
+          certifications: [
+            "Certified Ethical Hacker (CEH)",
+            "CISSP (Certified Information Systems Security Professional)",
+            "CompTIA Security+",
+            "CISA (Certified Information Systems Auditor)"
+          ],
+          applications: [
+            "Audit de sécurité",
+            "Tests de pénétration",
             "Analyse forensique",
-            "Gestion des risques"
+            "Gestion des risques cyber"
           ]
-        }
-        ,
+        },
         {
           id: 3,
           title: "Virtualisation & Cloud",
@@ -475,6 +486,18 @@ export const defaultPortfolioData = {
             "Microsoft Hyper-V",
             "Docker & Kubernetes",
             "AWS, Azure, Google Cloud"
+          ],
+          outils: [
+            "Terraform, Ansible",
+            "Jenkins, GitLab CI",
+            "Prometheus, Grafana",
+            "Helm, ArgoCD"
+          ],
+          certifications: [
+            "VMware Certified Professional",
+            "AWS Solutions Architect",
+            "Microsoft Azure Administrator",
+            "Kubernetes Administrator (CKA)"
           ],
           specialites: [
             "NFV (Network Function Virtualization)",
@@ -505,10 +528,10 @@ export const defaultPortfolioData = {
             "Apache Kafka"
           ],
           outils: [
-            "Metasploit, Burp Suite",
             "Tableau, Power BI",
             "Jupyter, Google Colab",
-            "Apache Airflow"
+            "Apache Airflow",
+            "Python, R, SQL"
           ],
           certifications: [
             "Microsoft Certified: Azure Data Scientist",
@@ -517,17 +540,11 @@ export const defaultPortfolioData = {
             "SAS Certified Specialist"
           ],
           applications: [
-            "Certified Ethical Hacker (CEH)",
-            "CISSP (Certified Information Systems Security Professional)",
-            "CompTIA Security+",
+            "Business Intelligence",
+            "Data Analytics",
+            "Reporting avancé",
             "Predictive Analytics"
           ],
-          applications: [
-            "Audit de sécurité",
-            "Tests de pénétration",
-            "Analyse forensique",
-            "Gestion des risques cyber"
-          ]
           methodologies: [
             "CRISP-DM",
             "Agile Analytics",
@@ -542,29 +559,32 @@ export const defaultPortfolioData = {
           color: "from-orange-500 to-red-500",
           description: "Expertise complète en ingénierie pédagogique numérique avec une spécialisation dans les technologies éducatives innovantes",
           skills: [
-          technologies: [
             "Maîtrise des LMS (360 Learning, Moodle, Blackboard)",
+            "Conception et gestion des SPOC/MOOC",
+            "Logiciels de conception de Digital Learning : Articulate, Rise, Vyond, Geniall",
+            "Logiciels d'enregistrement et de traitement multimédia",
+            "Enseignement à distance et classes virtuelles",
+            "Gamification et serious games",
+            "Réalité virtuelle et augmentée en éducation",
+            "Intelligence artificielle pédagogique"
+          ],
+          technologies: [
+            "Moodle, 360 Learning",
             "Blackboard, Canvas",
             "Microsoft Teams",
             "Zoom, BigBlueButton"
           ],
           outils: [
-            "Conception et gestion des SPOC/MOOC",
-            "Logiciels de conception de Digital Learning : Articulate, Rise, Vyond, Geniall",
+            "Articulate Storyline",
             "H5P, Genially",
-            "Camtasia, OBS Studio"
-            "Logiciels d'enregistrement et de traitement multimédia",
+            "Camtasia, OBS Studio",
+            "Adobe Creative Suite"
+          ],
           certifications: [
             "Instructional Design Certificate",
             "Moodle Administrator",
             "Adobe Certified Expert",
             "Google for Education Trainer"
-          ],
-          applications: [
-            "Enseignement à distance et classes virtuelles",
-            "Gamification et serious games",
-            "Réalité virtuelle et augmentée en éducation",
-            "Intelligence artificielle pédagogique"
           ],
           plateformes: [
             "Moodle, 360 Learning",
@@ -584,17 +604,27 @@ export const defaultPortfolioData = {
           title: "Programmation & Développement",
           icon: "CodeBracketIcon",
           color: "from-indigo-500 to-purple-500",
-          technologies: [
+          description: "Maîtrise complète du développement logiciel avec une expertise en programmation multi-langages et développement d'applications",
           skills: [
             "Programmation : HTML, CSS, PYTHON, C/C++, JAVA, J2EE",
             "Programmation des réseaux : Sockets, JSP",
-            "MySQL, PostgreSQL"
             "Développement d'applications web responsives",
-          outils: [
             "Développement d'APIs REST et services web",
             "Bases de données relationnelles et NoSQL",
             "Frameworks JavaScript modernes",
-            "Git, GitHub, GitLab"
+            "Développement mobile et applications cross-platform"
+          ],
+          technologies: [
+            "Python, Java, C/C++",
+            "HTML5, CSS3, JavaScript",
+            "MySQL, PostgreSQL",
+            "MongoDB, Redis"
+          ],
+          outils: [
+            "Git, GitHub, GitLab",
+            "Docker, Jenkins",
+            "VS Code, IntelliJ",
+            "Postman, Swagger"
           ],
           certifications: [
             "Oracle Certified Java Programmer",
@@ -629,8 +659,20 @@ export const defaultPortfolioData = {
           description: "Expertise avancée en intelligence artificielle avec une spécialisation dans l'apprentissage automatique et les applications éducatives",
           skills: [
             "Machine Learning et apprentissage supervisé/non supervisé",
-            "Pandas, NumPy"
+            "Deep Learning et réseaux de neurones",
             "Traitement du langage naturel (NLP)",
+            "Vision par ordinateur et reconnaissance d'images",
+            "Intelligence artificielle en éducation",
+            "Systèmes de recommandation personnalisés",
+            "Analyse prédictive et modélisation",
+            "Analyse prédictive d'apprentissage"
+          ],
+          technologies: [
+            "TensorFlow, PyTorch",
+            "Scikit-learn, Keras",
+            "OpenCV, NLTK",
+            "Pandas, NumPy"
+          ],
           outils: [
             "Jupyter, Google Colab",
             "Anaconda, Spyder",
@@ -642,30 +684,6 @@ export const defaultPortfolioData = {
             "AWS Machine Learning Specialty",
             "Google Cloud ML Engineer",
             "Microsoft Azure AI Engineer"
-          ],
-            "Vision par ordinateur et reconnaissance d'images",
-            "Intelligence artificielle en éducation",
-            "Systèmes de recommandation personnalisés",
-            "Analyse prédictive et modélisation",
-            "Analyse prédictive d'apprentissage"
-          ],
-          technologies: [
-            "TensorFlow, PyTorch",
-            "Scikit-learn, Keras",
-            "OpenCV, NLTK",
-            "Jupyter, Google Colab"
-          ],
-          outils: [
-            "Terraform, Ansible",
-            "Jenkins, GitLab CI",
-            "Prometheus, Grafana",
-            "Helm, ArgoCD"
-          ],
-          certifications: [
-            "VMware Certified Professional",
-            "AWS Solutions Architect",
-            "Microsoft Azure Administrator",
-            "Kubernetes Administrator (CKA)"
           ],
           applications: [
             "IA pédagogique",
@@ -1114,48 +1132,4 @@ export const PortfolioProvider = ({ children }) => {
       {children}
     </PortfolioContext.Provider>
   )
-}
-
-const updateProfile = async (profileData) => {
-  try {
-    setLoading(true)
-    
-    if (!user?.id) {
-      throw new Error('Utilisateur non authentifié')
-    }
-  
-    // Appel API pour mettre à jour le profil
-    const response = await fetch(getApiUrl(`/api/profile/${user.id}`), {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(profileData)
-    })
-  
-    const result = await safeJsonParse(response)
-  
-    if (!result.success) {
-      throw new Error(result.error)
-    }
-  
-    // Recharger les données depuis l'API pour assurer la synchronisation
-    await loadPortfolioData()
-    
-    // Convertir l'erreur en chaîne
-    const errorMessage = error instanceof Error ? error.message : String(error)
-    setError(errorMessage)
-    
-    // Mettre à jour le favicon si une nouvelle photo a été uploadée
-    if (profileData.photo) {
-      updateFavicon(profileData.photo)
-    }
-    
-    return { success: true }
-  } catch (error) {
-    console.error('Erreur lors de la mise à jour du profil:', error)
-    return { success: false, error }
-  } finally {
-    setLoading(false)
-  }
 }
