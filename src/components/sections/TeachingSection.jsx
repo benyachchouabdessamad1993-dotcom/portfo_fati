@@ -79,37 +79,10 @@ const TeachingSection = ({ sections }) => {
       institution = 'EST de Sidi Bennour'
       institutionColor = 'from-teal-500 to-blue-500'
       institutionIcon = BeakerIcon
-    } else if (!['Faculté des Sciences d\'El Jadida', 'ENSA d\'El Jadida', 'SUPEMIR', 'ESEF d\'El Jadida', 'FLSH d\'El Jadida', 'EST de Sidi Bennour'].includes(institution)) {
-      // Pour les établissements personnalisés, garder le nom exact et utiliser une couleur par défaut
+    } else {
+      // Pour les établissements non reconnus, utiliser une couleur par défaut
       institutionColor = 'from-slate-500 to-gray-500'
       institutionIcon = BuildingOffice2Icon
-    } else if (!course.establishment) {
-      // Fallback sur l'ancienne logique si pas d'établissement défini
-      if (course.description?.includes('Faculté des Sciences')) {
-        institution = 'Faculté des Sciences d\'El Jadida'
-        institutionColor = 'from-blue-500 to-cyan-500'
-        institutionIcon = AcademicCapIcon
-      } else if (course.description?.includes('ENSA')) {
-        institution = 'ENSA d\'El Jadida'
-        institutionColor = 'from-green-500 to-teal-500'
-        institutionIcon = SparklesIcon
-      } else if (course.description?.includes('SUPEMIR')) {
-        institution = 'SUPEMIR'
-        institutionColor = 'from-purple-500 to-pink-500'
-        institutionIcon = ComputerDesktopIcon
-      } else if (course.description?.includes('ESEF')) {
-        institution = 'ESEF d\'El Jadida'
-        institutionColor = 'from-orange-500 to-red-500'
-        institutionIcon = BookOpenIcon
-      } else if (course.description?.includes('FLSH')) {
-        institution = 'FLSH d\'El Jadida'
-        institutionColor = 'from-indigo-500 to-purple-500'
-        institutionIcon = UserGroupIcon
-      } else if (course.description?.includes('EST')) {
-        institution = 'EST de Sidi Bennour'
-        institutionColor = 'from-teal-500 to-blue-500'
-        institutionIcon = BeakerIcon
-      }
     }
 
     if (!acc[institution]) {
@@ -180,9 +153,16 @@ const TeachingSection = ({ sections }) => {
                         <div className="relative z-10">
                           {/* Badge niveau et heures */}
                           <div className="flex items-center justify-between mb-4">
-                            <span className={`px-3 py-1 bg-gradient-to-r ${course.color || institution.color} text-white rounded-full text-xs font-semibold`}>
+                            <div className="flex flex-col space-y-1">
+                              <span className={`px-3 py-1 bg-gradient-to-r ${course.color || institution.color} text-white rounded-full text-xs font-semibold`}>
                               {course.level}
-                            </span>
+                              </span>
+                              {course.semester && (
+                                <span className="text-xs text-slate-500 text-center">
+                                  {course.semester}
+                                </span>
+                              )}
+                            </div>
                             {course.hours && (
                               <div className="flex items-center text-slate-500 text-sm">
                                 <ClockIcon className="h-4 w-4 mr-1" />
@@ -388,9 +368,21 @@ const TeachingSection = ({ sections }) => {
                         Évaluation continue
                       </div>
                       <div className="flex items-center">
+                    <p className="text-slate-600 text-sm mb-1">
+                      {institution.name === 'Faculté des Sciences d\'El Jadida' ? 'Cycles Licence et Master' :
+                       institution.name === 'ENSA d\'El Jadida' ? 'École Nationale des Sciences Appliquées' :
+                       institution.name === 'SUPEMIR' ? 'École Supérieure Privée d\'Ingénierie' :
+                       institution.name === 'ESEF d\'El Jadida' ? 'École Supérieure de l\'Enseignement et de la Formation' :
+                       institution.name === 'FLSH d\'El Jadida' ? 'Faculté des Lettres et des Sciences Humaines' :
+                       institution.name === 'EST de Sidi Bennour' ? 'École Supérieure de Technologie' :
+                       'Établissement d\'enseignement supérieur'}
+                    </p>
                         <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
                         Accompagnement personnalisé
-                      </div>
+                      {institution.courses.length} cours • {institution.courses.reduce((total, course) => {
+                        const hours = course.hours?.replace('h', '') || '0'
+                        return total + (parseInt(hours) || 0)
+                      }, 0)}h total
                     </div>
                   </div>
                 </div>
