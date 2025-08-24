@@ -151,18 +151,19 @@ const AboutSection = ({ profile }) => {
                   Langues
                 </span>
                 <div className="flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full text-sm font-medium">
-                    Arabe
-                  </span>
-                  <span className="px-3 py-1 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-full text-sm font-medium">
-                    Français
-                  </span>
-                  <span className="px-3 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full text-sm font-medium">
-                    Anglais
-                  </span>
-                  <span className="px-3 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full text-sm font-medium">
-                    Espagnol
-                  </span>
+                  {(profile.langues || []).map((langue, index) => (
+                    <span 
+                      key={index}
+                      className={`px-3 py-1 bg-gradient-to-r ${langue.color} text-white rounded-full text-sm font-medium`}
+                    >
+                      {langue.nom}
+                    </span>
+                  ))}
+                  {(!profile.langues || profile.langues.length === 0) && (
+                    <span className="px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-sm font-medium">
+                      Aucune langue ajoutée
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
