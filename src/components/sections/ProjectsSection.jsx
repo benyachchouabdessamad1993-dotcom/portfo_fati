@@ -8,7 +8,10 @@ import {
   CalendarIcon,
   BuildingOffice2Icon,
   SparklesIcon,
-  ArrowTopRightOnSquareIcon
+  ArrowTopRightOnSquareIcon,
+  UserGroupIcon,
+  BeakerIcon,
+  ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 
 const ProjectsSection = ({ sections }) => {
@@ -20,136 +23,29 @@ const ProjectsSection = ({ sections }) => {
   // Utiliser le contenu de la base de données au lieu des données codées en dur
   const projectsData = projectsSection.content && projectsSection.content.length > 0 
     ? projectsSection.content 
-    : [
-        // Données par défaut si la base de données est vide
-        {
-          id: 1,
-          title: "Réinvention et valorisation du patrimoine d'El Jadida",
-          category: "Recherche Territoriale",
-          year: "2024",
-          status: "Terminé",
-          icon: BuildingOffice2Icon,
-          color: "from-blue-500 to-cyan-500",
-          description: "Membre d'équipe de recherche du projet « Réinvention et valorisation du patrimoine d'El Jadida : Impact des dynamiques économiques et culturelles sur le développement territorial et les transformations sociales », retenu dans le cadre de l'appel à projet PROGRES Edition 2024",
-          details: {
-            type: "Projet de recherche",
-            financement: "PROGRES Edition 2024",
-            role: "Membre d'équipe de recherche",
-            objectifs: [
-              "Étudier l'impact des dynamiques économiques sur le patrimoine",
-              "Analyser les transformations sociales liées au développement territorial",
-              "Proposer des stratégies de valorisation du patrimoine"
-            ]
-          }
-        },
-        {
-          id: 2,
-          title: "Open2SUSTAIN - Erasmus+",
-          category: "Éducation Durable",
-          year: "2023",
-          status: "Terminé",
-          icon: GlobeAltIcon,
-          color: "from-green-500 to-teal-500",
-          description: "Membre du projet Erasmus+ CBHE : « Developing SDG Literacy through innovative open Learning within Higher Education in the Euro Mediterranean Region - Open2SUSTAIN »",
-          details: {
-            type: "Projet Erasmus+ CBHE",
-            financement: "Union Européenne - Programme Erasmus+",
-            role: "Membre du projet",
-            region: "Euro-Méditerranéenne",
-            objectifs: [
-              "Développer la littératie des ODD dans l'enseignement supérieur",
-              "Créer des ressources d'apprentissage ouvert innovantes",
-              "Renforcer la coopération euro-méditerranéenne"
-            ]
-          }
-        },
-        {
-          id: 3,
-          title: "CORETEV - Technologies en Évaluation",
-          category: "Innovation Pédagogique",
-          year: "2020-2024",
-          status: "Terminé",
-          icon: AcademicCapIcon,
-          color: "from-purple-500 to-pink-500",
-          description: "Membre du projet CORETEV (CO-construction Nord-Sud d'un Réseau d'Expertises pour l'utilisation des nouvelles Technologies en Evaluation des apprentissages et des enseignements) sur l'ingénierie de l'évaluation cofinancé par le programme ERASMUS+ de l'union européenne",
-          details: {
-            type: "Projet Erasmus+ de coopération",
-            financement: "Union Européenne - Programme Erasmus+",
-            role: "Membre du projet",
-            durée: "2020-2024",
-            objectifs: [
-              "Co-construire un réseau d'expertises Nord-Sud",
-              "Développer l'usage des nouvelles technologies en évaluation",
-              "Former aux nouvelles méthodes d'évaluation des apprentissages"
-            ]
-          }
-        },
-        {
-          id: 4,
-          title: "MOOC SPOC prépa-TP",
-          category: "Formation Numérique",
-          year: "2019",
-          status: "Terminé",
-          icon: ComputerDesktopIcon,
-          color: "from-orange-500 to-red-500",
-          description: "Coordinatrice d'un Projet MOOC « SPOC prépa-TP : Initiation aux mesures électriques », sélectionné par le ministère de l'éducation nationale dans le cadre de la mise en place de « MAROC Université Numérique »",
-          details: {
-            type: "MOOC/SPOC",
-            financement: "Ministère de l'Éducation Nationale",
-            role: "Coordinatrice",
-            plateforme: "MAROC Université Numérique (www.mun.ma)",
-            objectifs: [
-              "Initier aux mesures électriques",
-              "Préparer aux travaux pratiques",
-              "Développer l'apprentissage numérique au Maroc"
-            ]
-          }
-        },
-        {
-          id: 5,
-          title: "Projets de Digitalisation Universitaire",
-          category: "Transformation Digitale",
-          year: "2022-2023",
-          status: "Terminé",
-          icon: SparklesIcon,
-          color: "from-indigo-500 to-purple-500",
-          description: "Projets en tant que directrice du pôle de digitalisation de l'université Chouaib Doukkali",
-          details: {
-            type: "Projets institutionnels",
-            role: "Directrice du pôle de digitalisation",
-            établissements: "8 établissements de l'université",
-            projets: [
-              {
-                nom: "Plateforme Moodle LMS",
-                description: "Mise en œuvre d'un Learning Management System pour les 8 établissements"
-              },
-              {
-                nom: "Plateforme de guichet unique",
-                description: "Portail centralisé pour candidatures Licences & Masters"
-              },
-              {
-                nom: "Gestion des visiteurs Datacenter",
-                description: "Application de gestion centralisée des interventions"
-              },
-              {
-                nom: "Récupération d'emails académiques",
-                description: "Solution automatique de récupération de mots de passe"
-              },
-              {
-                nom: "Configuration VPN",
-                description: "Déploiement VPN site-to-site pour accès sécurisé Apogée"
-              },
-              {
-                nom: "Google Workspace",
-                description: "Gestion de plus de 30 000 comptes académiques"
-              }
-            ]
-          }
-        }
-      ]
+    : []
 
-  // SUPPRIMER COMPLÈTEMENT la seconde déclaration de projectsData qui commence à la ligne 151
-  // et se termine à la ligne 268 (tout le tableau hardcodé dupliqué)
+  // Fonction pour obtenir l'icône à partir du nom de l'icône
+  const getIconComponent = (iconName) => {
+    const iconMap = {
+      'BuildingOffice2Icon': BuildingOffice2Icon,
+      'GlobeAltIcon': GlobeAltIcon,
+      'AcademicCapIcon': AcademicCapIcon,
+      'UserGroupIcon': UserGroupIcon,
+      'ComputerDesktopIcon': ComputerDesktopIcon,
+      'BeakerIcon': BeakerIcon,
+      'SparklesIcon': SparklesIcon,
+      'ShieldCheckIcon': ShieldCheckIcon,
+      'RocketLaunchIcon': RocketLaunchIcon
+    }
+    return iconMap[iconName] || RocketLaunchIcon
+  }
+
+  // Traiter les données des projets pour convertir les noms d'icônes en composants
+  const processedProjectsData = projectsData.map(project => ({
+    ...project,
+    icon: getIconComponent(project.icon)
+  }))
 
   return (
     <section id="projects" className="section-padding bg-gradient-to-b from-slate-50 to-white">
@@ -171,7 +67,7 @@ const ProjectsSection = ({ sections }) => {
 
         {/* Projects Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projectsData.map((project) => {
+          {processedProjectsData.map((project) => {
             const IconComponent = project.icon
             return (
               <div 
