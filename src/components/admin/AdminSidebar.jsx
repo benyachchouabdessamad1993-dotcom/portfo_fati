@@ -15,8 +15,13 @@ const AdminSidebar = () => {
   const navigation = [
     { name: 'Tableau de bord', href: '/admin', icon: ChartBarIcon, exact: true },
     { name: 'Profil', href: '/admin/profile', icon: UserIcon },
+    { name: 'Axes de Recherche', href: '/admin/research', icon: DocumentTextIcon },
+    { name: 'Compétences', href: '/admin/competences', icon: PhotoIcon },
+    { name: 'Publications', href: '/admin/publications', icon: DocumentTextIcon },
+    { name: 'Thèses Encadrées', href: '/admin/theses', icon: AcademicCapIcon },
     { name: 'Mes Cours', href: '/admin/courses', icon: AcademicCapIcon },
     { name: 'Mes Projets', href: '/admin/projects', icon: RocketLaunchIcon },
+    { name: 'Responsabilités', href: '/admin/responsibilities', icon: PhotoIcon },
     { name: 'Langues', href: '/admin/languages', icon: GlobeAltIcon },
     { name: 'Éditeur Simple', href: '/admin/sections', icon: DocumentTextIcon },
     { name: 'Gestion Sections', href: '/admin/sections-manager', icon: PhotoIcon },

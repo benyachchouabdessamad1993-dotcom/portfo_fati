@@ -11,6 +11,11 @@ import ProfileEditor from './pages/admin/ProfileEditor'
 import SectionsEditor from './pages/admin/SectionsEditor'
 import CoursesEditor from './pages/admin/CoursesEditor'
 import ProjectsEditor from './pages/admin/ProjectsEditor'
+import ResponsibilitiesEditor from './pages/admin/ResponsibilitiesEditor'
+import CompetencesEditor from './pages/admin/CompetencesEditor'
+import ResearchEditor from './pages/admin/ResearchEditor'
+import PublicationsEditor from './components/admin/PublicationsEditor'
+import ThesesEditor from './components/admin/ThesesEditor'
 import LanguagesEditor from './pages/admin/LanguagesEditor'
 import SectionsManager from './pages/admin/SectionsManager'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -43,9 +48,14 @@ function App() {
           }>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<ProfileEditor />} />
+            <Route path="research" element={<ResearchEditor />} />
+            <Route path="competences" element={<CompetencesEditor />} />
+            <Route path="publications" element={<PublicationsEditor />} />
+            <Route path="theses" element={<ThesesEditor />} />
             <Route path="sections" element={<SectionsEditor />} />
             <Route path="courses" element={<CoursesEditor />} />
             <Route path="projects" element={<ProjectsEditor />} />
+            <Route path="responsibilities" element={<ResponsibilitiesEditor />} />
             <Route path="languages" element={<LanguagesEditor />} />
             <Route path="sections-manager" element={<SectionsManager />} />
           </Route>
