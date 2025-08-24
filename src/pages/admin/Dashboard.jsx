@@ -65,6 +65,14 @@ const Dashboard = () => {
       bgGradient: 'from-blue-50 to-cyan-50'
     },
     {
+      title: 'Section À propos',
+      description: 'Personnaliser votre présentation',
+      href: '/admin/about',
+      icon: DocumentTextIcon,
+      gradient: 'from-cyan-500 to-blue-600',
+      bgGradient: 'from-cyan-50 to-blue-50'
+    },
+    {
       title: 'Gérer mes cours',
       description: 'Ajouter ou modifier vos enseignements',
       href: '/admin/courses',

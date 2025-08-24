@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <div className="animate-fade-in">
       <HeroSection profile={portfolioData.profile} />
-      <AboutSection profile={portfolioData.profile} />
+      <AboutSection profile={{...portfolioData.profile, sections: portfolioData.sections}} />
       <ResearchSection sections={portfolioData.sections} />
       <CompetencesSection sections={portfolioData.sections} />
       <PublicationsSection sections={portfolioData.sections} />

@@ -8,6 +8,10 @@ import {
 } from '@heroicons/react/24/outline'
 
 const AboutSection = ({ profile }) => {
+  // Récupérer le contenu de la section À propos depuis les sections
+  const aboutSection = profile?.sections?.find(section => section.id === 'a-propos')
+  const aboutContent = aboutSection?.content
+
   return (
     <section id="about" className="section-padding bg-gradient-to-b from-white to-slate-50">
       <div className="container-max">
@@ -25,6 +29,25 @@ const AboutSection = ({ profile }) => {
             des technologies de l'information et de la communication.
           </p>
         </div>
+
+        {/* Contenu personnalisé À propos */}
+        {aboutContent && aboutSection?.visible && (
+          <div className="mb-20">
+            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 p-12 rounded-3xl border border-blue-200 shadow-lg">
+              <div className="max-w-4xl mx-auto">
+                <div className="flex items-center justify-center mb-8">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
+                    <UserIcon className="h-8 w-8 text-white" />
+                  </div>
+                </div>
+                <div 
+                  className="prose prose-lg prose-blue max-w-none text-center text-slate-700 leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: aboutContent }}
+                />
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Profile Overview Cards */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">

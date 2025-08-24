@@ -18,6 +18,7 @@ import PublicationsEditor from './components/admin/PublicationsEditor'
 import ThesesEditor from './components/admin/ThesesEditor'
 import LanguagesEditor from './pages/admin/LanguagesEditor'
 import SectionsManager from './pages/admin/SectionsManager'
+import AboutEditor from './pages/admin/AboutEditor'
 import ProtectedRoute from './components/ProtectedRoute'
 import { useEffect } from 'react'
 
@@ -48,6 +49,7 @@ function App() {
           }>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<ProfileEditor />} />
+            <Route path="about" element={<AboutEditor />} />
             <Route path="research" element={<ResearchEditor />} />
             <Route path="competences" element={<CompetencesEditor />} />
             <Route path="publications" element={<PublicationsEditor />} />

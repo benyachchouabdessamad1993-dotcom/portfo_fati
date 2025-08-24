@@ -16,6 +16,7 @@ const AdminSidebar = () => {
   const navigation = [
     { name: 'Tableau de bord', href: '/admin', icon: ChartBarIcon, exact: true },
     { name: 'Profil', href: '/admin/profile', icon: UserIcon },
+    { name: 'À Propos', href: '/admin/about', icon: DocumentTextIcon },
     { name: 'Axes de Recherche', href: '/admin/research', icon: DocumentTextIcon },
     { name: 'Compétences', href: '/admin/competences', icon: PhotoIcon },
     { name: 'Publications', href: '/admin/publications', icon: DocumentTextIcon },

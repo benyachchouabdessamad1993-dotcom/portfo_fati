@@ -50,6 +50,17 @@
   ],
   "sections": [
     {
+      "id": "a-propos",
+      "user_id": 1,
+      "title": "À Propos",
+      "type": "text",
+      "content": "<p>Passionnée par les technologies de l'information et de la communication, je consacre ma carrière à l'innovation pédagogique et à la recherche scientifique. Mon parcours m'a menée de l'ingénierie des réseaux informatiques vers l'intelligence artificielle appliquée à l'éducation.</p><p>En tant que Vice-directrice du Laboratoire STIC et responsable de l'équipe TICEF, je m'engage à développer des solutions technologiques qui transforment l'apprentissage et l'enseignement. Ma mission est de créer des ponts entre la recherche fondamentale et les applications pratiques qui bénéficient directement aux étudiants et aux enseignants.</p><p>Au-delà de mes activités de recherche, j'ai eu le privilège de diriger la transformation digitale de l'Université Chouaib Doukkali, touchant plus de 30 000 utilisateurs. Cette expérience m'a convaincue que la technologie, quand elle est bien pensée et implémentée, peut révolutionner l'éducation.</p>",
+      "visible": true,
+      "order": 1.5,
+      "created_at": "2025-08-24T16:00:00.000Z",
+      "updated_at": "2025-08-24T16:00:00.000Z"
+    },
+    {
       "id": "publications",
       "user_id": 1,
       "title": "Publications",
