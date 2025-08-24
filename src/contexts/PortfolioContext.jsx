@@ -970,6 +970,9 @@ export const PortfolioProvider = ({ children }) => {
         )
       }))
       
+      // Recharger les données depuis l'API pour assurer la synchronisation
+      await loadPortfolioData()
+      
       return { success: true }
     } catch (error) {
       console.error('Erreur lors de la mise à jour de la section:', error)

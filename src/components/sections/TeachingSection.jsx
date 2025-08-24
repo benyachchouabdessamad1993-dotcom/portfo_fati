@@ -27,8 +27,25 @@ const TeachingSection = ({ sections }) => {
     return <span>Mon engagement dans la formation des futurs ingénieurs et chercheurs en technologies de l'information et de la communication.</span>
   }
 
-  // Récupérer les cours depuis teachingSection - correction pour afficher tous les cours
-  const coursesData = Array.isArray(teachingSection.content) ? teachingSection.content : []
+  // Récupérer les cours depuis teachingSection avec gestion des erreurs
+  const getCoursesData = () => {
+    try {
+      if (Array.isArray(teachingSection.content)) {
+        return teachingSection.content
+      }
+      // Si le contenu est une chaîne JSON, essayer de la parser
+      if (typeof teachingSection.content === 'string') {
+        const parsed = JSON.parse(teachingSection.content)
+        return Array.isArray(parsed) ? parsed : []
+      }
+      return []
+    } catch (error) {
+      console.error('Erreur parsing courses data:', error)
+      return []
+    }
+  }
+  
+  const coursesData = getCoursesData()
 
   // Organiser les cours par établissement
   const coursesByInstitution = coursesData.reduce((acc, course) => {

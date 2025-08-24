@@ -270,6 +270,11 @@ app.put('/api/sections/:userId/:sectionId', (req, res) => {
     const { userId, sectionId } = req.params
     const sectionData = req.body
     
+    console.log('=== MISE À JOUR SECTION ===')
+    console.log('Section ID:', sectionId)
+    console.log('User ID:', userId)
+    console.log('Data reçue:', JSON.stringify(sectionData, null, 2))
+    
     const data = readData()
     const existingSectionIndex = data.sections.findIndex(s => s.id === sectionId && s.user_id == userId)
     
@@ -278,22 +283,25 @@ app.put('/api/sections/:userId/:sectionId', (req, res) => {
       data.sections[existingSectionIndex] = {
         ...data.sections[existingSectionIndex],
         ...sectionData,
-        content: JSON.stringify(sectionData.content),
+        content: typeof sectionData.content === 'string' ? sectionData.content : JSON.stringify(sectionData.content),
         updated_at: new Date().toISOString()
       }
+      console.log('Section mise à jour:', data.sections[existingSectionIndex])
     } else {
       // Créer
       const newSection = {
         id: sectionId,
         user_id: parseInt(userId),
         ...sectionData,
-        content: JSON.stringify(sectionData.content),
+        content: typeof sectionData.content === 'string' ? sectionData.content : JSON.stringify(sectionData.content),
         created_at: new Date().toISOString()
       }
       data.sections.push(newSection)
+      console.log('Nouvelle section créée:', newSection)
     }
     
     if (writeData(data)) {
+      console.log('✅ Section sauvegardée avec succès')
       res.json({ success: true })
     } else {
       throw new Error('Erreur lors de la sauvegarde')

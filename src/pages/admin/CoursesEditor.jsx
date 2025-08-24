@@ -115,7 +115,7 @@ const CoursesEditor = () => {
       const validCourses = data.courses
         .filter(course => course.title.trim() && course.level.trim() && course.establishment.trim())
         .map((course, index) => ({
-          id: course.id || `course-${Date.now()}-${index}`,
+          id: course.id || `course-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
           ...course,
           level: course.level === 'Autre' ? course.customLevel : course.level,
           establishment: course.establishment === 'Autre' ? course.customEstablishment : course.establishment
@@ -130,7 +130,7 @@ const CoursesEditor = () => {
       const result = await updateSection('enseignement', {
         title: 'Enseignement',
         type: 'cards',
-        content: validCourses, // ✅ CORRECTION: utiliser validCourses au lieu de updatedCourses
+        content: validCourses,
         visible: true,
         order: 12
       })
@@ -139,6 +139,8 @@ const CoursesEditor = () => {
         toast.success(`${validCourses.length} cours sauvegardé${validCourses.length > 1 ? 's' : ''} avec succès!`)
         setIsEditing(false)
         setEditingCourseIndex(null)
+        // Recharger les données pour synchroniser l'affichage
+        window.location.reload()
       } else {
         toast.error('Erreur lors de la sauvegarde')
       }
