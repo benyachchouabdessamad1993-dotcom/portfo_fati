@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { usePortfolio } from '../../contexts/PortfolioContext'
-import SimpleEditor from '../../components/admin/SimpleEditor'
+import SimpleWordEditor from '../../components/admin/SimpleWordEditor'
 import { 
   PlusIcon,
   EyeIcon,
@@ -87,7 +87,7 @@ const SectionsEditor = () => {
   if (isEditorOpen) {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <SimpleEditor
+        <SimpleWordEditor
           section={editingSection}
           onSave={handleSaveSection}
           onCancel={handleCancelEdit}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
-import WysiwygEditor from './WysiwygEditor'
+import SimpleWordEditor from './SimpleWordEditor'
 import { 
   PlusIcon,
   TrashIcon,
@@ -123,11 +123,16 @@ const SimpleEditor = ({ section, onSave, onCancel, loading }) => {
             <label className="block text-sm font-medium text-secondary-700 mb-2">
               Contenu
             </label>
-            <WysiwygEditor
-              value={watch('content')}
-              onChange={handleContentChange}
-              placeholder="Écrivez votre contenu ici... Utilisez la barre d'outils pour formater le texte."
-              height="300px"
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <p className="text-blue-800 text-sm">
+                <strong>Utilisez l'éditeur Word ci-dessus</strong> pour formater votre contenu avec une interface simple et intuitive.
+              </p>
+            </div>
+            <textarea
+              {...register('content')}
+              rows={8}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+              placeholder="Ou saisissez directement votre contenu ici..."
             />
           </div>
         )}
