@@ -4,7 +4,8 @@ import {
   UserGroupIcon,
   GlobeAltIcon,
   SparklesIcon,
-  AcademicCapIcon
+  AcademicCapIcon,
+  UserIcon
 } from '@heroicons/react/24/outline'
 
 const AboutSection = ({ profile }) => {
