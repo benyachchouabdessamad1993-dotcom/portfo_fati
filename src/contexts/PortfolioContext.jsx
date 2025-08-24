@@ -441,7 +441,153 @@ export const defaultPortfolioData = {
             "Gestion des risques"
           ]
         }
-        // ... ajouter les autres compétences de la même manière
+        {
+          id: 3,
+          title: "Virtualisation & Cloud",
+          icon: "CloudIcon",
+          color: "from-purple-500 to-indigo-500",
+          description: "Maîtrise complète des technologies de virtualisation et d'architecture cloud avec une expertise en transformation digitale",
+          skills: [
+            "Virtualisation (Serveurs, Systèmes d'exploitation, Postes de travail, Applications, Stockage)",
+            "Virtualisation des réseaux (NFV, SDN, SD-WAN)",
+            "Conception et mise en place des réseaux sans fil avec et sans infrastructure",
+            "Architecture cloud hybride et multi-cloud",
+            "Conteneurisation et orchestration",
+            "Infrastructure as Code (IaC)",
+            "Migration vers le cloud et optimisation des coûts"
+          ],
+          technologies: [
+            "VMware vSphere",
+            "Microsoft Hyper-V",
+            "Docker & Kubernetes",
+            "AWS, Azure, Google Cloud"
+          ],
+          specialites: [
+            "NFV (Network Function Virtualization)",
+            "SDN (Software Defined Networking)",
+            "SD-WAN (Software Defined WAN)",
+            "Infrastructure hyperconvergée"
+          ]
+        },
+        {
+          id: 4,
+          title: "Analyse de Données",
+          icon: "ChartBarIcon",
+          color: "from-green-500 to-teal-500",
+          description: "Expertise en science des données avec une approche complète du Big Data, de l'analyse prédictive et de l'intelligence d'affaires",
+          skills: [
+            "Big Data : Architecture et traitement de données massives",
+            "Data Warehouse : Conception et optimisation d'entrepôts de données",
+            "Data Mining : Extraction de connaissances et patterns",
+            "Analyse prédictive et modélisation statistique",
+            "Visualisation de données et tableaux de bord",
+            "ETL (Extract, Transform, Load) et pipelines de données",
+            "Business Intelligence et aide à la décision"
+          ],
+          outils: [
+            "Hadoop, Spark",
+            "SQL Server, Oracle",
+            "Python, R",
+            "Tableau, Power BI"
+          ],
+          methodologies: [
+            "CRISP-DM",
+            "Agile Analytics",
+            "Data Governance",
+            "Machine Learning"
+          ]
+        },
+        {
+          id: 5,
+          title: "Formation Digitale",
+          icon: "BookOpenIcon",
+          color: "from-orange-500 to-red-500",
+          description: "Expertise complète en ingénierie pédagogique numérique avec une spécialisation dans les technologies éducatives innovantes",
+          skills: [
+            "Conception pédagogique de dispositifs de formation digitaux",
+            "Maîtrise des LMS (360 Learning, Moodle, Blackboard)",
+            "Conception et gestion des SPOC/MOOC",
+            "Logiciels de conception de Digital Learning : Articulate, Rise, Vyond, Geniall",
+            "Conception pédagogique et développement technique des solutions d'apprentissage en ligne et du micro-apprentissage innovantes et créatives",
+            "Logiciels d'enregistrement et de traitement multimédia",
+            "Numérisation des systèmes et processus de production / Documentaliste",
+            "Enseignement à distance et classes virtuelles",
+            "Gamification et serious games",
+            "Réalité virtuelle et augmentée en éducation",
+            "Intelligence artificielle pédagogique"
+          ],
+          plateformes: [
+            "Moodle, 360 Learning",
+            "Articulate Storyline",
+            "Adobe Captivate",
+            "H5P, Genially"
+          ],
+          methodologies: [
+            "ADDIE Model",
+            "Design Thinking",
+            "Classe inversée",
+            "Apprentissage adaptatif"
+          ]
+        },
+        {
+          id: 6,
+          title: "Programmation & Développement",
+          icon: "CodeBracketIcon",
+          color: "from-indigo-500 to-purple-500",
+          description: "Compétences solides en développement logiciel avec une expertise en programmation web, réseaux et systèmes",
+          skills: [
+            "Programmation : HTML, CSS, PYTHON, C/C++, JAVA, J2EE",
+            "Programmation des réseaux : Sockets, JSP",
+            "Expertise en CMS de gestion de contenu (JOOMLA, WORDPRESS, DRUPAL)",
+            "Développement d'applications web responsives",
+            "Programmation orientée objet et design patterns",
+            "Développement d'APIs REST et services web",
+            "Bases de données relationnelles et NoSQL",
+            "Frameworks JavaScript modernes",
+            "DevOps et intégration continue"
+          ],
+          langages: [
+            "Python, Java, C/C++",
+            "HTML5, CSS3, JavaScript",
+            "PHP, JSP",
+            "SQL, MongoDB"
+          ],
+          frameworks: [
+            "Spring Boot, Django",
+            "React, Vue.js",
+            "Bootstrap, Tailwind",
+            "Node.js, Express"
+          ]
+        },
+        {
+          id: 7,
+          title: "Intelligence Artificielle",
+          icon: "SparklesIcon",
+          color: "from-pink-500 to-rose-500",
+          description: "Expertise avancée en intelligence artificielle avec une spécialisation dans l'apprentissage automatique et les applications éducatives",
+          skills: [
+            "Machine Learning et apprentissage supervisé/non supervisé",
+            "Deep Learning et réseaux de neurones",
+            "Traitement du langage naturel (NLP)",
+            "Vision par ordinateur et reconnaissance d'images",
+            "Intelligence artificielle en éducation",
+            "Systèmes de recommandation personnalisés",
+            "Analyse prédictive et modélisation",
+            "Éthique de l'IA et biais algorithmiques"
+          ],
+          technologies: [
+            "TensorFlow, PyTorch",
+            "Scikit-learn, Keras",
+            "OpenCV, NLTK",
+            "Jupyter, Google Colab"
+          ],
+          applications: [
+            "IA pédagogique",
+            "Systèmes adaptatifs",
+            "Chatbots éducatifs",
+            "Analyse d'apprentissage"
+          ]
+        }
       ]
     },
     {
