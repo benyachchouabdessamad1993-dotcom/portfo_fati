@@ -117,6 +117,19 @@ const ProfileEditor = () => {
 
   const handlePasswordChange = async (data) => {
     try {
+     setPasswordLoading(true)
+     
+     // Validation des mots de passe
+     if (passwordData.newPassword !== passwordData.confirmPassword) {
+       toast.error('Les mots de passe ne correspondent pas')
+       return
+     }
+     
+     if (passwordData.newPassword.length < 6) {
+       toast.error('Le mot de passe doit contenir au moins 6 caractères')
+       return
+     }
+     
       const response = await fetch(getApiUrl('/api/change-password'), {
         method: 'POST',
         headers: {
@@ -124,8 +137,8 @@ const ProfileEditor = () => {
           'x-user-id': user?.id
         },
         body: JSON.stringify({
-          currentPassword: data.currentPassword,
-          newPassword: data.newPassword,
+         currentPassword: passwordData.currentPassword,
+         newPassword: passwordData.newPassword,
           userId: user?.id
         })
       })
@@ -592,7 +605,10 @@ const ProfileEditor = () => {
             </button>
             
             {showPasswordSection && (
-              <form onSubmit={handlePasswordChange} className="space-y-6 bg-gradient-to-r from-gray-50 to-white p-6 rounded-xl border border-gray-200">
+             <form onSubmit={(e) => {
+               e.preventDefault()
+               handlePasswordChange()
+             }} className="space-y-6 bg-gradient-to-r from-gray-50 to-white p-6 rounded-xl border border-gray-200">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-3">
                     Mot de passe actuel
