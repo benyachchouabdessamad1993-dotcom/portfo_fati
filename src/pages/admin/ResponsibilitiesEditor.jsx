@@ -24,7 +24,31 @@ const ResponsibilitiesEditor = () => {
   const [editingResponsibilityIndex, setEditingResponsibilityIndex] = useState(null)
   
   const responsibilitiesSection = portfolioData.sections.find(section => section.id === 'responsabilites')
-  const existingResponsibilities = responsibilitiesSection?.content || []
+  
+  // Traitement sécurisé du contenu des responsabilités
+  const getResponsibilitiesContent = () => {
+    if (!responsibilitiesSection?.content) return []
+    
+    // Si c'est déjà un tableau, le retourner
+    if (Array.isArray(responsibilitiesSection.content)) {
+      return responsibilitiesSection.content
+    }
+    
+    // Si c'est une chaîne JSON, essayer de la parser
+    if (typeof responsibilitiesSection.content === 'string') {
+      try {
+        const parsed = JSON.parse(responsibilitiesSection.content)
+        return Array.isArray(parsed) ? parsed : []
+      } catch (error) {
+        console.error('Erreur parsing responsibilities:', error)
+        return []
+      }
+    }
+    
+    return []
+  }
+  
+  const existingResponsibilities = getResponsibilitiesContent()
   
   const { register, control, handleSubmit, reset, watch, formState: { errors } } = useForm({
     defaultValues: {

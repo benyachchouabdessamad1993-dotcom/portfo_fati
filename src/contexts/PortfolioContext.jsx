@@ -848,7 +848,22 @@ export const PortfolioProvider = ({ children }) => {
       let apiSections = []
       if (sectionsResponse.ok) {
         try {
-          apiSections = await safeJsonParse(sectionsResponse)
+          const rawSections = await safeJsonParse(sectionsResponse)
+          // Traiter les sections pour parser le contenu JSON si nécessaire
+          apiSections = rawSections.map(section => {
+            if (typeof section.content === 'string' && (section.type === 'cards' || section.type === 'list')) {
+              try {
+                return {
+                  ...section,
+                  content: JSON.parse(section.content)
+                }
+              } catch (error) {
+                console.error(`Erreur parsing section ${section.id}:`, error)
+                return section
+              }
+            }
+            return section
+          })
         } catch (error) {
           console.error('Erreur parsing sections:', error)
           apiSections = []

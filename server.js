@@ -253,12 +253,22 @@ app.get('/api/sections/:userId', (req, res) => {
     const data = readData()
     
     const sections = data.sections.filter(s => s.user_id == userId)
-    const formattedSections = sections.map(section => ({
-      ...section,
-      content: typeof section.content === 'string' && (section.type === 'cards' || section.type === 'list') 
-        ? JSON.parse(section.content) 
-        : section.content
-    }))
+    const formattedSections = sections.map(section => {
+      try {
+        return {
+          ...section,
+          content: typeof section.content === 'string' && (section.type === 'cards' || section.type === 'list') 
+            ? JSON.parse(section.content) 
+            : section.content
+        }
+      } catch (error) {
+        console.error(`Erreur parsing section ${section.id}:`, error)
+        return {
+          ...section,
+          content: section.content
+        }
+      }
+    })
     
     res.json(formattedSections)
   } catch (error) {
