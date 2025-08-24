@@ -8,7 +8,8 @@ import {
   ChartBarIcon,
   AcademicCapIcon,
   GlobeAltIcon,
-  RocketLaunchIcon
+  RocketLaunchIcon,
+  ShieldCheckIcon
 } from '@heroicons/react/24/outline'
 
 const AdminSidebar = () => {
@@ -21,7 +22,7 @@ const AdminSidebar = () => {
     { name: 'Thèses Encadrées', href: '/admin/theses', icon: AcademicCapIcon },
     { name: 'Mes Cours', href: '/admin/courses', icon: AcademicCapIcon },
     { name: 'Mes Projets', href: '/admin/projects', icon: RocketLaunchIcon },
-    { name: 'Responsabilités', href: '/admin/responsibilities', icon: PhotoIcon },
+    { name: 'Responsabilités', href: '/admin/responsibilities', icon: ShieldCheckIcon },
     { name: 'Langues', href: '/admin/languages', icon: GlobeAltIcon },
     { name: 'Éditeur Simple', href: '/admin/sections', icon: DocumentTextIcon },
     { name: 'Gestion Sections', href: '/admin/sections-manager', icon: PhotoIcon },
