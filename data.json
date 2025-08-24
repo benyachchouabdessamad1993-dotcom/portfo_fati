@@ -85,10 +85,11 @@
       "id": "axes-recherche",
       "user_id": 1,
       "title": "Axes de Recherche",
-      "content": "[\"Réseaux Informatiques\",\"La Sécurité des Réseaux\",\"L'enseignement à distance\",\"Les nouvelles techniques en évaluation des apprentissages\",\"Les systèmes embarqués\",\"L'informatique quantique\",\"Blockchain\",\"Les Réseaux sans fil sans infrastructure\",\"Virtualisation des Réseaux (NFV, SDN…)\",\"Intelligence Artificielle : Machine-Learning, Deep learning, Big Data\",\"test\"]",
+      "content": "[\"Réseaux Informatiques\",\"La Sécurité des Réseaux\",\"L'enseignement à distance\",\"Les nouvelles techniques en évaluation des apprentissages\",\"Les systèmes embarqués\",\"L'informatique quantique\",\"Blockchain\",\"Les Réseaux sans fil sans infrastructure\",\"Virtualisation des Réseaux (NFV, SDN…)\",\"Intelligence Artificielle : Machine-Learning, Deep learning, Big Data\"]",
       "visible": true,
       "type": "list",
-      "created_at": "2025-08-24T15:20:16.106Z"
+      "created_at": "2025-08-24T15:20:16.106Z",
+      "updated_at": "2025-08-24T15:20:50.886Z"
     }
   ]
 }
