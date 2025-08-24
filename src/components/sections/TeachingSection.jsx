@@ -101,6 +101,7 @@ const TeachingSection = ({ sections }) => {
   const institutionsList = Object.values(coursesByInstitution)
 
   return (
+    <>
     <section id="teaching" className="section-padding bg-gradient-to-b from-white to-slate-50">
       <div className="container-max">
         {/* Section Header */}
@@ -450,6 +451,7 @@ const TeachingSection = ({ sections }) => {
           </div>
         </div>
       </div>
+    </>
     </section>
   )
 }
