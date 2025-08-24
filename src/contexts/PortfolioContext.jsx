@@ -401,8 +401,6 @@ export const defaultPortfolioData = {
             "Optimisation système"
           ],
           technologies: [
-          ]
-          technologies: [
             "Windows Server 2012-2022",
             "Linux (Debian, Fedora, Kali)",
             "Active Directory",
