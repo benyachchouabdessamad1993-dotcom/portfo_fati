@@ -100,7 +100,7 @@ const ResponsibilitiesSection = ({ sections }) => {
           details: {
             type: "Gouvernance académique",
             périmètre: "Faculté des Sciences",
-            domaines: "Informatique et Mathématiques",
+            domaines: ["Informatique et Mathématiques"],
             missions: [
               "Validation des programmes pédagogiques",
               "Évaluation des enseignements",
@@ -322,7 +322,7 @@ const ResponsibilitiesSection = ({ sections }) => {
                         {selectedResponsibility.details.domaines ? 'Domaines de recherche' : 'Thématiques de recherche'}
                       </h3>
                       <div className="flex flex-wrap gap-2">
-                        {(selectedResponsibility.details.domaines || selectedResponsibility.details.thématiques).map((item, index) => (
+                        {(selectedResponsibility.details.domaines || selectedResponsibility.details.thématiques || []).map((item, index) => (
                           <span key={index} className={`px-3 py-1 bg-gradient-to-r ${selectedResponsibility.color} text-white rounded-full text-sm font-medium`}>
                             {item}
                           </span>
