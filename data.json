@@ -43,14 +43,10 @@
         },
         {
           "nom": "Espagnol",
-          "color": "from-orange-500 to-red-500"
-        },
-        {
-          "nom": "tres",
-          "color": "from-yellow-500 to-orange-500"
+          "color": "from-cyan-500 to-blue-500"
         }
       ],
-      "updated_at": "2025-08-24T14:16:43.524Z"
+      "updated_at": "2025-08-24T14:17:57.606Z"
     }
   ],
   "sections": []
