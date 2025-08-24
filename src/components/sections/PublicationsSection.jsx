@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useContext } from 'react'
+import { PortfolioContext } from '../../contexts/PortfolioContext'
 import { 
   DocumentTextIcon,
   AcademicCapIcon,
@@ -12,12 +14,13 @@ import {
 
 const PublicationsSection = ({ sections }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false)
+  const { portfolioData } = useContext(PortfolioContext)
   const publicationsSection = sections.find(section => section.id === 'publications')
   
   if (!publicationsSection || !publicationsSection.visible) return null
 
-  // Données complètes des publications organisées par domaines
-  const publicationsData = {
+  // Données par défaut si pas de contenu dans le backoffice
+  const defaultPublicationsData = {
     reseauxSecurite: {
       title: "Réseaux et Sécurité",
       icon: ShieldCheckIcon,
@@ -311,6 +314,9 @@ const PublicationsSection = ({ sections }) => {
       ]
     }
   }
+
+  // Utiliser les données du backoffice ou les données par défaut
+  const publicationsData = publicationsSection.content || defaultPublicationsData
 
   const getYearStats = () => {
     const allPublications = [
