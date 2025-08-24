@@ -316,19 +316,30 @@ const PublicationsSection = ({ sections }) => {
   }
 
   // Utiliser les données du backoffice ou les données par défaut
-  const publicationsData = publicationsSection.content || defaultPublicationsData
+  const publicationsData = {
+    reseauxSecurite: {
+      ...defaultPublicationsData.reseauxSecurite,
+      ...(publicationsSection.content?.reseauxSecurite || {})
+    },
+    elearningIA: {
+      ...defaultPublicationsData.elearningIA,
+      ...(publicationsSection.content?.elearningIA || {})
+    }
+  }
 
   const getYearStats = () => {
     const allPublications = [
-      ...publicationsData.reseauxSecurite.articles,
-      ...publicationsData.reseauxSecurite.communications,
-      ...publicationsData.elearningIA.articles,
-      ...publicationsData.elearningIA.communications
+      ...(publicationsData.reseauxSecurite?.articles || []),
+      ...(publicationsData.reseauxSecurite?.communications || []),
+      ...(publicationsData.elearningIA?.articles || []),
+      ...(publicationsData.elearningIA?.communications || [])
     ]
     
     const yearCounts = {}
     allPublications.forEach(pub => {
-      yearCounts[pub.year] = (yearCounts[pub.year] || 0) + 1
+      if (pub?.year) {
+        yearCounts[pub.year] = (yearCounts[pub.year] || 0) + 1
+      }
     })
     
     return yearCounts
@@ -363,19 +374,19 @@ const PublicationsSection = ({ sections }) => {
           </div>
           <div className="text-center p-6 bg-white rounded-2xl shadow-lg border border-slate-100">
             <div className="text-4xl font-bold text-green-600 mb-2">
-              {publicationsData.reseauxSecurite.articles.length + publicationsData.elearningIA.articles.length}
+              {(publicationsData.reseauxSecurite?.articles?.length || 0) + (publicationsData.elearningIA?.articles?.length || 0)}
             </div>
             <div className="text-slate-600 font-medium">Articles de Revues</div>
           </div>
           <div className="text-center p-6 bg-white rounded-2xl shadow-lg border border-slate-100">
             <div className="text-4xl font-bold text-purple-600 mb-2">
-              {publicationsData.reseauxSecurite.communications.length + publicationsData.elearningIA.communications.length}
+              {(publicationsData.reseauxSecurite?.communications?.length || 0) + (publicationsData.elearningIA?.communications?.length || 0)}
             </div>
             <div className="text-slate-600 font-medium">Communications</div>
           </div>
           <div className="text-center p-6 bg-white rounded-2xl shadow-lg border border-slate-100">
             <div className="text-4xl font-bold text-orange-600 mb-2">
-              {Math.max(...Object.keys(yearStats).map(Number)) - Math.min(...Object.keys(yearStats).map(Number)) + 1}
+              {Object.keys(yearStats).length > 0 ? Math.max(...Object.keys(yearStats).map(Number)) - Math.min(...Object.keys(yearStats).map(Number)) + 1 : 0}
             </div>
             <div className="text-slate-600 font-medium">Années Actives</div>
           </div>
@@ -399,7 +410,7 @@ const PublicationsSection = ({ sections }) => {
                         {domain.title}
                       </h3>
                       <p className="text-slate-600">
-                        {domain.articles.length} articles • {domain.communications.length} communications
+                        {domain.articles?.length || 0} articles • {domain.communications?.length || 0} communications
                       </p>
                     </div>
                   </div>
@@ -407,16 +418,19 @@ const PublicationsSection = ({ sections }) => {
                   <div className="space-y-4 mb-6">
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600">Articles indexés</span>
-                      <span className="font-bold text-slate-900">{domain.articles.length}</span>
+                      <span className="font-bold text-slate-900">{domain.articles?.length || 0}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600">Communications</span>
-                      <span className="font-bold text-slate-900">{domain.communications.length}</span>
+                      <span className="font-bold text-slate-900">{domain.communications?.length || 0}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600">Période</span>
                       <span className="font-bold text-slate-900">
-                        {Math.min(...domain.articles.map(a => parseInt(a.year)))} - {Math.max(...domain.articles.map(a => parseInt(a.year)))}
+                        {domain.articles?.length > 0 ? 
+                          `${Math.min(...domain.articles.map(a => parseInt(a.year)))} - ${Math.max(...domain.articles.map(a => parseInt(a.year)))}` : 
+                          'N/A'
+                        }
                       </span>
                     </div>
                   </div>
@@ -475,10 +489,10 @@ const PublicationsSection = ({ sections }) => {
                       <div className="mb-8">
                         <h4 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                           <DocumentTextIcon className="h-5 w-5 mr-2 text-blue-600" />
-                          Articles publiés dans des revues indexées ({domain.articles.length})
+                          Articles publiés dans des revues indexées ({domain.articles?.length || 0})
                         </h4>
                         <div className="space-y-4">
-                          {domain.articles.map((article, index) => (
+                          {(domain.articles || []).map((article, index) => (
                             <div key={article.id} className="p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
                               <div className="flex items-start justify-between mb-2">
                                 <span className="text-sm font-medium text-slate-500">[{index + 1}]</span>
@@ -507,10 +521,10 @@ const PublicationsSection = ({ sections }) => {
                       <div>
                         <h4 className="text-lg font-semibold text-slate-800 mb-4 flex items-center">
                           <AcademicCapIcon className="h-5 w-5 mr-2 text-purple-600" />
-                          Communications dans des manifestations nationales et internationales ({domain.communications.length})
+                          Communications dans des manifestations nationales et internationales ({domain.communications?.length || 0})
                         </h4>
                         <div className="space-y-4">
-                          {domain.communications.map((comm, index) => (
+                          {(domain.communications || []).map((comm, index) => (
                             <div key={comm.id} className="p-4 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors">
                               <div className="flex items-start justify-between mb-2">
                                 <span className="text-sm font-medium text-slate-500">[{index + 1}]</span>
