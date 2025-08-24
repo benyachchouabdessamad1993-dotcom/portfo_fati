@@ -547,7 +547,7 @@ try {
   console.log('✅ Données initialisées avec succès')
 } catch (error) {
   console.error('❌ ERREUR CRITIQUE lors de l\'initialisation:', error)
-  process.exit(1)
+  console.error('⚠️ Le serveur va démarrer malgré l\'erreur d\'initialisation')
 }
 
 app.listen(PORT, () => {
