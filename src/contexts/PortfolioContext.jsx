@@ -397,17 +397,30 @@ export const defaultPortfolioData = {
             "Scripting PowerShell et Bash pour l'automatisation",
             "Gestion des Active Directory et politiques de groupe",
             "Configuration et maintenance des services de messagerie",
-            "Surveillance et monitoring des infrastructures IT"
-          ],
           technologies: [
-            "Windows Server, Linux",
-            "VMware, Hyper-V",
+            "Windows Server 2012-2022",
+            "Linux (Debian, Fedora, Kali)",
+            "Active Directory",
+            "VMware vSphere"
+          ],
+          outils: [
+            "Nagios, PRTG, SolarWinds",
             "PowerShell, Bash",
-            "Active Directory"
+            "Group Policy Management",
+            "System Center"
+          ],
+          certifications: [
+            "Microsoft Certified Systems Administrator",
+            "Linux Professional Institute Certification",
+            "Cisco Network Associate",
+            "VMware Certified Professional"
           ],
           applications: [
             "Gestion d'infrastructure",
             "Automatisation IT",
+            "Support technique avancé",
+            "Optimisation des performances"
+          ]
             "Support technique",
             "Optimisation système"
           ]
@@ -431,12 +444,12 @@ export const defaultPortfolioData = {
           technologies: [
             "Nessus, OpenVAS",
             "Wireshark, Nmap",
-            "Metasploit, Burp Suite",
-            "Splunk, ELK Stack"
+          technologies: [
+            "IDS/IPS (Snort, Suricata)",
+            "Firewalls (pfSense, Fortinet)",
+            "PKI et certificats SSL/TLS",
+            "VPN (OpenVPN, IPSec)"
           ],
-          applications: [
-            "Audit sécurité",
-            "Tests d'intrusion",
             "Analyse forensique",
             "Gestion des risques"
           ]
@@ -485,12 +498,36 @@ export const defaultPortfolioData = {
             "ETL (Extract, Transform, Load) et pipelines de données",
             "Business Intelligence et aide à la décision"
           ],
-          outils: [
+          technologies: [
             "Hadoop, Spark",
             "SQL Server, Oracle",
-            "Python, R",
-            "Tableau, Power BI"
+            "MongoDB, Cassandra",
+            "Apache Kafka"
           ],
+          outils: [
+            "Metasploit, Burp Suite",
+            "Tableau, Power BI",
+            "Jupyter, Google Colab",
+            "Apache Airflow"
+          ],
+          certifications: [
+            "Microsoft Certified: Azure Data Scientist",
+            "Google Cloud Professional Data Engineer",
+            "Tableau Desktop Specialist",
+            "SAS Certified Specialist"
+          ],
+          applications: [
+            "Certified Ethical Hacker (CEH)",
+            "CISSP (Certified Information Systems Security Professional)",
+            "CompTIA Security+",
+            "Predictive Analytics"
+          ],
+          applications: [
+            "Audit de sécurité",
+            "Tests de pénétration",
+            "Analyse forensique",
+            "Gestion des risques cyber"
+          ]
           methodologies: [
             "CRISP-DM",
             "Agile Analytics",
@@ -505,13 +542,25 @@ export const defaultPortfolioData = {
           color: "from-orange-500 to-red-500",
           description: "Expertise complète en ingénierie pédagogique numérique avec une spécialisation dans les technologies éducatives innovantes",
           skills: [
-            "Conception pédagogique de dispositifs de formation digitaux",
+          technologies: [
             "Maîtrise des LMS (360 Learning, Moodle, Blackboard)",
+            "Blackboard, Canvas",
+            "Microsoft Teams",
+            "Zoom, BigBlueButton"
+          ],
+          outils: [
             "Conception et gestion des SPOC/MOOC",
             "Logiciels de conception de Digital Learning : Articulate, Rise, Vyond, Geniall",
-            "Conception pédagogique et développement technique des solutions d'apprentissage en ligne et du micro-apprentissage innovantes et créatives",
+            "H5P, Genially",
+            "Camtasia, OBS Studio"
             "Logiciels d'enregistrement et de traitement multimédia",
-            "Numérisation des systèmes et processus de production / Documentaliste",
+          certifications: [
+            "Instructional Design Certificate",
+            "Moodle Administrator",
+            "Adobe Certified Expert",
+            "Google for Education Trainer"
+          ],
+          applications: [
             "Enseignement à distance et classes virtuelles",
             "Gamification et serious games",
             "Réalité virtuelle et augmentée en éducation",
@@ -535,17 +584,29 @@ export const defaultPortfolioData = {
           title: "Programmation & Développement",
           icon: "CodeBracketIcon",
           color: "from-indigo-500 to-purple-500",
-          description: "Compétences solides en développement logiciel avec une expertise en programmation web, réseaux et systèmes",
+          technologies: [
           skills: [
             "Programmation : HTML, CSS, PYTHON, C/C++, JAVA, J2EE",
             "Programmation des réseaux : Sockets, JSP",
-            "Expertise en CMS de gestion de contenu (JOOMLA, WORDPRESS, DRUPAL)",
+            "MySQL, PostgreSQL"
             "Développement d'applications web responsives",
-            "Programmation orientée objet et design patterns",
+          outils: [
             "Développement d'APIs REST et services web",
             "Bases de données relationnelles et NoSQL",
             "Frameworks JavaScript modernes",
-            "DevOps et intégration continue"
+            "Git, GitHub, GitLab"
+          ],
+          certifications: [
+            "Oracle Certified Java Programmer",
+            "Python Institute Certified",
+            "Microsoft Technology Associate",
+            "AWS Developer Associate"
+          ],
+          applications: [
+            "Développement web full-stack",
+            "Applications d'entreprise",
+            "Systèmes de gestion",
+            "APIs et microservices"
           ],
           langages: [
             "Python, Java, C/C++",
@@ -568,19 +629,43 @@ export const defaultPortfolioData = {
           description: "Expertise avancée en intelligence artificielle avec une spécialisation dans l'apprentissage automatique et les applications éducatives",
           skills: [
             "Machine Learning et apprentissage supervisé/non supervisé",
-            "Deep Learning et réseaux de neurones",
+            "Pandas, NumPy"
             "Traitement du langage naturel (NLP)",
+          outils: [
+            "Jupyter, Google Colab",
+            "Anaconda, Spyder",
+            "MLflow, Weights & Biases",
+            "Docker, Kubernetes"
+          ],
+          certifications: [
+            "TensorFlow Developer Certificate",
+            "AWS Machine Learning Specialty",
+            "Google Cloud ML Engineer",
+            "Microsoft Azure AI Engineer"
+          ],
             "Vision par ordinateur et reconnaissance d'images",
             "Intelligence artificielle en éducation",
             "Systèmes de recommandation personnalisés",
             "Analyse prédictive et modélisation",
-            "Éthique de l'IA et biais algorithmiques"
+            "Analyse prédictive d'apprentissage"
           ],
           technologies: [
             "TensorFlow, PyTorch",
             "Scikit-learn, Keras",
             "OpenCV, NLTK",
             "Jupyter, Google Colab"
+          ],
+          outils: [
+            "Terraform, Ansible",
+            "Jenkins, GitLab CI",
+            "Prometheus, Grafana",
+            "Helm, ArgoCD"
+          ],
+          certifications: [
+            "VMware Certified Professional",
+            "AWS Solutions Architect",
+            "Microsoft Azure Administrator",
+            "Kubernetes Administrator (CKA)"
           ],
           applications: [
             "IA pédagogique",
