@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import { useAuth } from './AuthContext'
 import { updateFavicon, setDefaultFavicon } from '../utils/faviconUtils'
 
-const PortfolioContext = createContext({})
+export const PortfolioContext = createContext({})
 
 export const usePortfolio = () => {
   const context = useContext(PortfolioContext)
