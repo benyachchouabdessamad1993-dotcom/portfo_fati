@@ -20,10 +20,30 @@ const ProjectsSection = ({ sections }) => {
   
   if (!projectsSection || !projectsSection.visible) return null
 
-  // Utiliser le contenu de la base de données au lieu des données codées en dur
-  const projectsData = projectsSection.content && projectsSection.content.length > 0 
-    ? projectsSection.content 
-    : []
+  // Fonction pour récupérer les données des projets de manière sécurisée
+  const getProjectsData = () => {
+    try {
+      if (!projectsSection.content) return []
+      
+      // Si c'est une chaîne JSON, la parser
+      if (typeof projectsSection.content === 'string') {
+        const parsed = JSON.parse(projectsSection.content)
+        return Array.isArray(parsed) ? parsed : []
+      }
+      
+      // Si c'est déjà un tableau
+      if (Array.isArray(projectsSection.content)) {
+        return projectsSection.content
+      }
+      
+      return []
+    } catch (error) {
+      console.error('Erreur parsing projects:', error)
+      return []
+    }
+  }
+  
+  const projectsData = getProjectsData()
 
   // Fonction pour obtenir l'icône à partir du nom de l'icône
   const getIconComponent = (iconName) => {

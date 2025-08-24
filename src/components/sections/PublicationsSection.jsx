@@ -316,16 +316,45 @@ const PublicationsSection = ({ sections }) => {
   }
 
   // Utiliser les données du backoffice ou les données par défaut
-  const publicationsData = {
-    reseauxSecurite: {
-      ...defaultPublicationsData.reseauxSecurite,
-      ...(publicationsSection.content?.reseauxSecurite || {})
-    },
-    elearningIA: {
-      ...defaultPublicationsData.elearningIA,
-      ...(publicationsSection.content?.elearningIA || {})
+  const getPublicationsData = () => {
+    try {
+      // Si le contenu existe dans la base de données
+      if (publicationsSection.content) {
+        // Si c'est une chaîne JSON, la parser
+        if (typeof publicationsSection.content === 'string') {
+          const parsed = JSON.parse(publicationsSection.content)
+          return {
+            reseauxSecurite: {
+              ...defaultPublicationsData.reseauxSecurite,
+              ...(parsed.reseauxSecurite || {})
+            },
+            elearningIA: {
+              ...defaultPublicationsData.elearningIA,
+              ...(parsed.elearningIA || {})
+            }
+          }
+        }
+        // Si c'est déjà un objet
+        return {
+          reseauxSecurite: {
+            ...defaultPublicationsData.reseauxSecurite,
+            ...(publicationsSection.content.reseauxSecurite || {})
+          },
+          elearningIA: {
+            ...defaultPublicationsData.elearningIA,
+            ...(publicationsSection.content.elearningIA || {})
+          }
+        }
+      }
+      // Fallback vers les données par défaut
+      return defaultPublicationsData
+    } catch (error) {
+      console.error('Erreur parsing publications:', error)
+      return defaultPublicationsData
     }
   }
+  
+  const publicationsData = getPublicationsData()
 
   const getYearStats = () => {
     const allPublications = [

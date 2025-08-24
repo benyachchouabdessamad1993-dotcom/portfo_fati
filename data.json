@@ -50,6 +50,17 @@
   ],
   "sections": [
     {
+      "id": "projets",
+      "user_id": 1,
+      "title": "Projets",
+      "type": "cards",
+      "content": "[{\"id\":1,\"title\":\"Directrice du pôle de digitalisation\",\"category\":\"Transformation Digitale\",\"year\":\"2023-2024\",\"status\":\"Terminé\",\"description\":\"Direction stratégique de la transformation digitale de l'université avec 8 établissements et plus de 30 000 utilisateurs\",\"icon\":\"ComputerDesktopIcon\",\"color\":\"from-blue-500 to-cyan-500\",\"details\":{\"type\":\"Projet institutionnel\",\"financement\":\"Université Chouaib Doukkali\",\"role\":\"Directrice\",\"objectifs\":[\"Digitaliser les processus administratifs\",\"Former les équipes aux outils numériques\",\"Moderniser l'infrastructure IT\",\"Améliorer l'expérience utilisateur\"]}},{\"id\":2,\"title\":\"Plateforme E-learning Adaptative\",\"category\":\"Innovation Pédagogique\",\"year\":\"2022-2024\",\"status\":\"En cours\",\"description\":\"Développement d'une plateforme d'apprentissage adaptatif basée sur l'intelligence artificielle pour personnaliser l'enseignement\",\"icon\":\"AcademicCapIcon\",\"color\":\"from-green-500 to-teal-500\",\"details\":{\"type\":\"Projet de recherche\",\"financement\":\"CNRST\",\"role\":\"Coordinatrice\",\"objectifs\":[\"Personnaliser l'apprentissage\",\"Améliorer l'engagement étudiant\",\"Optimiser les parcours pédagogiques\",\"Intégrer l'IA en éducation\"]}},{\"id\":3,\"title\":\"Sécurisation des Réseaux IoT\",\"category\":\"Recherche Territoriale\",\"year\":\"2021-2023\",\"status\":\"Terminé\",\"description\":\"Recherche sur la sécurisation des réseaux IoT pour les smart cities avec développement de protocoles de sécurité innovants\",\"icon\":\"ShieldCheckIcon\",\"color\":\"from-red-500 to-pink-500\",\"details\":{\"type\":\"Projet de recherche\",\"financement\":\"Union Européenne\",\"role\":\"Membre\",\"objectifs\":[\"Développer des protocoles sécurisés\",\"Tester en environnement réel\",\"Publier les résultats\",\"Former les doctorants\"]}},{\"id\":4,\"title\":\"Formation Continue Numérique\",\"category\":\"Formation Continue\",\"year\":\"2020-2024\",\"status\":\"En cours\",\"description\":\"Programme de formation continue pour les enseignants sur l'intégration des technologies numériques dans l'enseignement\",\"icon\":\"UserGroupIcon\",\"color\":\"from-purple-500 to-pink-500\",\"details\":{\"type\":\"Programme de formation\",\"financement\":\"Ministère de l'Éducation\",\"role\":\"Responsable pédagogique\",\"objectifs\":[\"Former 500+ enseignants\",\"Créer des ressources pédagogiques\",\"Accompagner la transformation\",\"Évaluer l'impact\"]}}]",
+      "visible": true,
+      "order": 6,
+      "created_at": "2025-08-24T16:00:00.000Z",
+      "updated_at": "2025-08-24T16:00:00.000Z"
+    },
+    {
       "id": "a-propos",
       "user_id": 1,
       "title": "À Propos",
