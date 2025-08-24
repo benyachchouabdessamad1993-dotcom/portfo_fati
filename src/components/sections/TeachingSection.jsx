@@ -451,6 +451,7 @@ const TeachingSection = ({ sections }) => {
           </div>
         </div>
       </div>
+    </section>
     </>
   )
 }
