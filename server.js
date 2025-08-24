@@ -495,6 +495,7 @@ const initDatabase = () => {
 // Routes d'authentification
 app.post('/api/auth/signin', (req, res) => {
   try {
+    console.log('Tentative de connexion pour:', req.body.email)
     const { email, password } = req.body
     
     if (!email || !password) {
@@ -508,15 +509,18 @@ app.post('/api/auth/signin', (req, res) => {
     const user = db.prepare('SELECT * FROM users WHERE email = ?').get(email)
     
     if (!user) {
+      console.log('Utilisateur non trouvé:', email)
       return res.status(401).json({ success: false, error: 'Utilisateur non trouvé' })
     }
     
     const isValidPassword = bcrypt.compareSync(password, user.password_hash)
     
     if (!isValidPassword) {
+      console.log('Mot de passe incorrect pour:', email)
       return res.status(401).json({ success: false, error: 'Mot de passe incorrect' })
     }
     
+    console.log('Connexion réussie pour:', email)
     res.json({ 
       success: true, 
       user: { 
@@ -525,6 +529,7 @@ app.post('/api/auth/signin', (req, res) => {
       } 
     })
   } catch (error) {
+    console.error('Erreur de connexion:', error)
     res.status(500).json({ success: false, error: 'Erreur de connexion' })
   }
 })

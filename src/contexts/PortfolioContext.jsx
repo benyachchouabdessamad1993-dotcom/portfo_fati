@@ -550,8 +550,7 @@ export const PortfolioProvider = ({ children }) => {
   // Extraire loadPortfolioData comme fonction du composant
   // Ajouter cette fonction utilitaire au début du fichier
   const getApiUrl = (endpoint) => {
-    const baseUrl = import.meta.env.VITE_API_URL || ''
-    // Supprimer le slash final de baseUrl et le slash initial d'endpoint si nécessaire
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001'
     const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
     return `${cleanBaseUrl}${cleanEndpoint}`

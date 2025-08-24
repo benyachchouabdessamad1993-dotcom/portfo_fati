@@ -41,17 +41,12 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Appel API pour l'authentification
-      // Ajouter la fonction getApiUrl
-      const getApiUrl = (endpoint) => {
-        const baseUrl = import.meta.env.VITE_API_URL || ''
-        // Supprimer le slash final de baseUrl et le slash initial d'endpoint si nécessaire
-        const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl
-        const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
-        return `${cleanBaseUrl}${cleanEndpoint}`
-      }
+      // Configuration de l'URL API
+      const apiUrl = import.meta.env.VITE_API_URL 
+        ? `${import.meta.env.VITE_API_URL}/api/auth/signin`
+        : 'http://localhost:3001/api/auth/signin'
       
-      // Remplacer ligne 44
-      const response = await fetch(getApiUrl('/api/auth/signin'), {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
